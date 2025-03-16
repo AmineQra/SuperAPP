@@ -1,9 +1,9 @@
 import { RouterModule, Routes } from '@angular/router';
-import { MyrecipesComponent } from './pages/myrecipes/myrecipes.component';
 import { NgModule } from '@angular/core';
+import { RecipesComponent } from './pages/recipes/recipes.component';
 
 export const routes: Routes = [
-  { path: '', component: MyrecipesComponent },
+  { path: '', component: RecipesComponent },
   { path: '**', redirectTo: '' },
 ];
 
