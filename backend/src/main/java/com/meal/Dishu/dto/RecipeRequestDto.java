@@ -5,6 +5,7 @@ import java.util.Set;
 import com.meal.Dishu.enumeration.RecipeType;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,9 +22,9 @@ public class RecipeRequestDto {
 
     private String description;
 
-    @NotBlank(message = "Minimum 1 ingredient")
+    @NotEmpty(message = "Minimum 1 ingredient")
     private Set<Long> ingredients;
 
-    @NotBlank(message = "minimum 1 type")
+    @NotEmpty(message = "minimum 1 type")
     private Set<RecipeType> types;
 }

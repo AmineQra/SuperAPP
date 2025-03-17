@@ -5,6 +5,10 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.meal.Dishu.dto.RecipeRequestDto;
@@ -29,14 +33,17 @@ public class RecipeService {
     }
 
     public Recipe createRecipe(RecipeRequestDto recipeRequestDto){
-        Recipe recipe = new Recipe();
-        recipe.setName(recipeRequestDto.getName());
-        recipe.setDescription(recipeRequestDto.getDescription());
-
         Set<Ingredient> ingredients = this.retrievIngredients(recipeRequestDto);
-        recipe.setIngredients(ingredients);
 
-        recipe.setTypes(recipeRequestDto.getTypes());
+        if(ingredients.isEmpty()){
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ingredients request not found");
+        }
+        Recipe recipe = Recipe.builder()
+        .name(recipeRequestDto.getName())
+        .description(recipeRequestDto.getDescription())
+        .ingredients(ingredients)
+        .types(recipeRequestDto.getTypes())
+        .build();
 
         return recipeRepository.save(recipe);
     }
