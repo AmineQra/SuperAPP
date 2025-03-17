@@ -3,6 +3,7 @@ package com.meal.Dishu.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.meal.Dishu.dto.RecipeRequestDto;
 import com.meal.Dishu.model.Recipe;
 import com.meal.Dishu.service.RecipeService;
 
@@ -43,8 +44,8 @@ public class RecipeController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Recipe> createRecipe(@RequestBody Recipe recipe) {
-        Recipe newRecipe = recipeService.createRecipe(recipe);
+    public ResponseEntity<Recipe> createRecipe(@RequestBody RecipeRequestDto recipeRequestDto) {
+        Recipe newRecipe = recipeService.createRecipe(recipeRequestDto);
         return ResponseEntity.ok(newRecipe);
     }
 

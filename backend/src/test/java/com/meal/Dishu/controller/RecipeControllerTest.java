@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.meal.Dishu.dto.RecipeRequestDto;
 import com.meal.Dishu.model.Recipe;
 import com.meal.Dishu.service.RecipeService;
 
@@ -70,7 +71,7 @@ public class RecipeControllerTest {
     @Test
     void shouldCreateRecipeSuccessfully() throws Exception {
         Recipe recipe = new Recipe(null, "Pizza", "Delicious cheese pizza", null, null);
-        when(recipeService.createRecipe(any(Recipe.class))).thenReturn(recipe);
+        when(recipeService.createRecipe(any(RecipeRequestDto.class))).thenReturn(recipe);
         
         mockMvc.perform(post("/api/recipes/add")
                 .contentType(MediaType.APPLICATION_JSON)

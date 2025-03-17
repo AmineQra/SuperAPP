@@ -43,7 +43,7 @@ public class Recipe {
         joinColumns = @JoinColumn(name = "recipe_id"),
         inverseJoinColumns = @JoinColumn(name = "ingredient_id")
     )
-    private Set<Ingredient> ingredient;
+    private Set<Ingredient> ingredients;
 
 
     @ElementCollection(targetClass = RecipeType.class)

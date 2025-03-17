@@ -1,6 +1,9 @@
 package com.meal.Dishu.service;
 
+import com.meal.Dishu.dto.RecipeRequestDto;
+import com.meal.Dishu.model.Ingredient;
 import com.meal.Dishu.model.Recipe;
+import com.meal.Dishu.repository.IngredientRepository;
 import com.meal.Dishu.repository.RecipeRepository;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -13,7 +16,7 @@ import java.util.Arrays;
 
 import java.util.List;
 import java.util.Optional;
-
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -23,6 +26,9 @@ class RecipeServiceTest {
 
     @Mock
     private RecipeRepository recipeRepository;
+
+    @Mock
+    private IngredientRepository ingredientRepository;
 
     @InjectMocks
     private RecipeService recipeService;
@@ -34,10 +40,15 @@ class RecipeServiceTest {
 
     @Test
     void shouldCreateRecipeSuccessfully() {
-        Recipe recipe = new Recipe(null, "Pizza", "Delicious cheese pizza", null, null);
+        Set<Long> dtoIngredients = Set.of(1L);
+        Ingredient ingredient = new Ingredient(1L, "pomme", 2.2, 2.2, 2.2, 2.2);
+        Set<Ingredient> ingredients = Set.of(ingredient);
+        RecipeRequestDto recipeRequestDto = new RecipeRequestDto("Pizza", "Delicious cheese pizza", dtoIngredients, null);
+        Recipe recipe = new Recipe(1L, "Pizza", "Delicious cheese pizza", ingredients, null);
         when(recipeRepository.save(any(Recipe.class))).thenReturn(recipe);
+        when(ingredientRepository.save(any(Ingredient.class))).thenReturn(ingredient);
 
-        Recipe createdRecipe = recipeService.createRecipe(recipe);
+        Recipe createdRecipe = recipeService.createRecipe(recipeRequestDto);
 
         assertNotNull(createdRecipe);
         assertEquals("Pizza", createdRecipe.getName());
