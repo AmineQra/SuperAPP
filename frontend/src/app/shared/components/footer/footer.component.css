@@ -1,0 +1,22 @@
+.app-footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #e8d5cc; /* Couleur de fond */
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+  border-top: 1px solid #bda18a;
+}
+
+.nav-btn {
+  background: none;
+  border: none;
+  color: #c49d83; /* Couleur du texte */
+  font-size: 1em;
+  cursor: pointer;
+}
+
+.nav-btn:focus {
+  outline: none;
+}

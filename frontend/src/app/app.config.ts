@@ -15,6 +15,7 @@ import { AuthInterceptorService } from './core/interceptors/auth-interceptor.ser
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideRouter(routes),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideClientHydration(withEventReplay()),

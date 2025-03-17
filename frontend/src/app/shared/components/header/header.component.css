@@ -1,0 +1,21 @@
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #d5cabc; /* Couleur de fond */
+  color: #c49d83; /* Couleur du texte */
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 1.5em;
+}
+
+.profile-btn {
+  background: none;
+  border: none;
+  font-size: 1em;
+  color: inherit;
+  cursor: pointer;
+}
