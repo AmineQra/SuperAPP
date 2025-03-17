@@ -1,13 +1,37 @@
-<div class="recipes-page">
-  <!-- Recipes List -->
-  <div class="recipes-container">
-    <div class="recipe-card">
-      <h2>name</h2>
-      <p>description</p>
+<mat-card class="recipe-card">
+  <div class="card-header">
+    <mat-card-title><h4>Cheese Pizza</h4></mat-card-title>
+    <div class="actions">
+      <button mat-icon-button color="primary">
+        <mat-icon>visibility</mat-icon>
+      </button>
+      <button mat-icon-button color="accent">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button color="warn">
+        <mat-icon>delete</mat-icon>
+      </button>
     </div>
   </div>
 
-  <div class="add-button-container">
-    <button class="add-recipe-btn">+ Add New Recipe</button>
+  <div class="card-content">
+    <img mat-card-image src="img/pizza.jpg" alt="Image de la recette" />
+    <div class="text-content">
+      <h4 class="section-title">Ingrédients</h4>
+      <!-- limite de 4 ingredients + "..." -->
+      <mat-chip-set>
+        <mat-chip class="ingredient"> tomate </mat-chip>
+        <mat-chip class="ingredient"> cheese </mat-chip>
+        <mat-chip class="ingredient"> pâte à pizza </mat-chip>
+        <mat-chip class="ingredient"> persil </mat-chip>
+        <mat-chip class="ingredient"> ... </mat-chip>
+      </mat-chip-set>
+
+      <h4 class="section-title">Catégorie</h4>
+      <mat-chip-set>
+        <mat-chip class="meal"> déjeuner </mat-chip>
+        <mat-chip class="meal"> dîner </mat-chip>
+      </mat-chip-set>
+    </div>
   </div>
-</div>
+</mat-card>

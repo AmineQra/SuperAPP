@@ -1,48 +1,49 @@
-/* Page container with background color from your palette */
-.recipes-page {
-  padding: 16px;
-  background-color: #f5efe6;
-  min-height: calc(100vh - 120px); /* Adjust based on header/footer height */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+.recipe-card {
+  margin: 8px;
+  padding: 8px;
 }
 
-/* Container for the list of recipes */
-.recipes-container {
+.card-header {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.actions {
+  display: flex;
+  gap: 4px;
+}
+
+.actions button {
+  width: 32px;
+  height: 32px;
+}
+
+.card-content {
+  display: flex;
+  align-items: center;
   gap: 12px;
 }
 
-/* Recipe card styling using your palette */
-.recipe-card {
-  background-color: #e8d5cc;
-  padding: 12px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  color: #bda18a;
+img {
+  width: 120px;
+  height: 120px;
+  border-radius: 20% 5% !important;
 }
 
-/* Container for the Add New Recipe button */
-.add-button-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
+.section-title {
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 8px;
 }
 
-/* Styling for the button */
-.add-recipe-btn {
-  background-color: #c49d83;
-  color: #f5efe6;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+mat-chip.ingredient {
+  background-color: #e0e0e0;
+  color: #333;
 }
 
-.add-recipe-btn:hover {
-  background-color: #bda18a;
+mat-chip.meal {
+  background-color: #ffcc80;
+  color: #d84315;
+  font-weight: bold;
 }
