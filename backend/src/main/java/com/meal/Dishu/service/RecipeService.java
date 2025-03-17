@@ -22,14 +22,18 @@ public class RecipeService {
     private final RecipeRepository recipeRepository;
     private final IngredientRepository ingredientRepository;
 
+    public Set<Ingredient> retrievIngredients(RecipeRequestDto recipeRequestDto){
+        return ingredientRepository.findAllById(recipeRequestDto.getIngredients())
+        .stream()
+        .collect(Collectors.toSet());
+    }
+
     public Recipe createRecipe(RecipeRequestDto recipeRequestDto){
         Recipe recipe = new Recipe();
         recipe.setName(recipeRequestDto.getName());
         recipe.setDescription(recipeRequestDto.getDescription());
 
-        Set<Ingredient> ingredients = ingredientRepository.findAllById(recipeRequestDto.getIngredients())
-                .stream()
-                .collect(Collectors.toSet());
+        Set<Ingredient> ingredients = this.retrievIngredients(recipeRequestDto);
         recipe.setIngredients(ingredients);
 
         recipe.setTypes(recipeRequestDto.getTypes());
