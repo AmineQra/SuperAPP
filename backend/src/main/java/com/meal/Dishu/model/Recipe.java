@@ -2,8 +2,14 @@ package com.meal.Dishu.model;
 
 import java.util.Set;
 
+import com.meal.Dishu.enumeration.RecipeType;
+
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -27,9 +33,6 @@ public class Recipe {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private 
-
     private String description;
 
     @ManyToMany
@@ -39,5 +42,12 @@ public class Recipe {
         inverseJoinColumns = @JoinColumn(name = "ingredient_id")
     )
     private Set<Ingredient> ingredient;
+
+
+    @ElementCollection(targetClass = RecipeType.class)
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(name = "recipe_enum_types", joinColumns = @JoinColumn(name = "recipe_id"))
+    @Column(name = "recipe_type")
+    private Set<RecipeType> types;
     
 }

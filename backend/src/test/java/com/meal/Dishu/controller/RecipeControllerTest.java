@@ -45,8 +45,8 @@ public class RecipeControllerTest {
     @Test
     void shouldReturnAllRecipesSuccessfully() throws Exception {
         List<Recipe> recipes = List.of(
-            new Recipe(1L, "Pizza", "Delicious cheese pizza", null),
-            new Recipe(2L, "Burger", "Delicious cheese Burger", null)
+            new Recipe(1L, "Pizza", "Delicious cheese pizza", null, null),
+            new Recipe(2L, "Burger", "Delicious cheese Burger", null, null)
         );
         when(recipeService.getAllRecipes()).thenReturn(recipes);
 
@@ -59,7 +59,7 @@ public class RecipeControllerTest {
 
     @Test
     void shouldReturnRecipeByIdSuccessfully() throws Exception {
-        Recipe recipe = new Recipe(1L, "Pizza", "Cheese pizza", null);
+        Recipe recipe = new Recipe(1L, "Pizza", "Cheese pizza", null, null);
         when(recipeService.getRecipeById(1L)).thenReturn(Optional.of(recipe));
 
         mockMvc.perform(get("/api/recipes/1"))
@@ -69,7 +69,7 @@ public class RecipeControllerTest {
 
     @Test
     void shouldCreateRecipeSuccessfully() throws Exception {
-        Recipe recipe = new Recipe(null, "Pizza", "Delicious cheese pizza", null);
+        Recipe recipe = new Recipe(null, "Pizza", "Delicious cheese pizza", null, null);
         when(recipeService.createRecipe(any(Recipe.class))).thenReturn(recipe);
         
         mockMvc.perform(post("/api/recipes/add")

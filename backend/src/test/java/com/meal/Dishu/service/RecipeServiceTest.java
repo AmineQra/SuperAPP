@@ -34,7 +34,7 @@ class RecipeServiceTest {
 
     @Test
     void shouldCreateRecipeSuccessfully() {
-        Recipe recipe = new Recipe(null, "Pizza", "Delicious cheese pizza", null);
+        Recipe recipe = new Recipe(null, "Pizza", "Delicious cheese pizza", null, null);
         when(recipeRepository.save(any(Recipe.class))).thenReturn(recipe);
 
         Recipe createdRecipe = recipeService.createRecipe(recipe);
@@ -46,8 +46,8 @@ class RecipeServiceTest {
     @Test
     void shouldReturnAllRecipes() {
         List<Recipe> recipes = Arrays.asList(
-                new Recipe(1L, "Pizza", "Delicious cheese pizza", null),
-                new Recipe(2L, "Pasta", "Tasty pasta with tomato sauce", null)
+                new Recipe(1L, "Pizza", "Delicious cheese pizza", null, null),
+                new Recipe(2L, "Pasta", "Tasty pasta with tomato sauce", null, null)
         );
         when(recipeRepository.findAll()).thenReturn(recipes);
 
@@ -59,7 +59,7 @@ class RecipeServiceTest {
 
     @Test
     void shouldReturnRecipeById() {
-        Recipe recipe = new Recipe(1L, "Pizza", "Delicious cheese pizza", null);
+        Recipe recipe = new Recipe(1L, "Pizza", "Delicious cheese pizza", null, null);
         when(recipeRepository.findById(1L)).thenReturn(Optional.of(recipe));
 
         Optional<Recipe> foundRecipe = recipeService.getRecipeById(1L);
