@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.meal.Dishu.dto.RecipeRequestDto;
 import com.meal.Dishu.model.Recipe;
 import com.meal.Dishu.repository.RecipeRepository;
 
@@ -16,8 +17,8 @@ public class RecipeService {
     
     private final RecipeRepository recipeRepository;
 
-    public Recipe createRecipe(Recipe recipe){
-        return recipeRepository.save(recipe);
+    public Recipe createRecipe(RecipeRequestDto recipeRequestDto){
+        return recipeRepository.save(recipeRequestDto);
     }
 
     public Optional<Recipe> getRecipeById(Long id){

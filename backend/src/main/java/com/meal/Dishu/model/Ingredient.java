@@ -23,5 +23,11 @@ public class Ingredient {
     private String name;
 
     private double quantity;
+
+    private double proteine;
+
+    private double carbs;
+
+    private double fats;
     
 }
