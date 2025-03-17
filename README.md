@@ -4,3 +4,4 @@
 ## 2 - Frontend full design recipe page 
 ## 3 - ADD recipe button -> backend service handle creating 
 ## 4 - Working search bar recipe + Filter by Catégorie 
+## 5 - Design header and footer(navigation CSS)
