@@ -27,6 +27,9 @@ public class Recipe {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
+    private 
+
     private String description;
 
     @ManyToMany

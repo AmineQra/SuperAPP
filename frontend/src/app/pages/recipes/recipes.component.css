@@ -1,53 +1,48 @@
-header {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  background: #ff7043;
-  color: white;
-}
-.search-bar {
-  flex-grow: 1;
-  margin: 0 10px;
-  padding: 5px;
-  border-radius: 5px;
-  border: none;
-}
-.profile-btn {
-  background: white;
-  color: #ff7043;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
-}
-.recipe-list {
-  width: 100%;
+/* Page container with background color from your palette */
+.recipes-page {
+  padding: 16px;
+  background-color: #f5efe6;
+  min-height: calc(100vh - 120px); /* Adjust based on header/footer height */
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: space-between;
 }
-.recipe-card {
-  background: white;
-  width: 90%;
-  padding: 10px;
-  margin: 5px 0;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  border-radius: 5px;
-}
-.add-btn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: #ff7043;
-  color: white;
-  border: none;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  font-size: 24px;
+
+/* Container for the list of recipes */
+.recipes-container {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Recipe card styling using your palette */
+.recipe-card {
+  background-color: #e8d5cc;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: #bda18a;
+}
+
+/* Container for the Add New Recipe button */
+.add-button-container {
+  display: flex;
   justify-content: center;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  margin-top: 20px;
+}
+
+/* Styling for the button */
+.add-recipe-btn {
+  background-color: #c49d83;
+  color: #f5efe6;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-recipe-btn:hover {
+  background-color: #bda18a;
 }
