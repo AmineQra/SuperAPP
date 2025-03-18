@@ -1,22 +1,26 @@
 .app-footer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: linear-gradient(45deg, #ff9800, #e65100);
+  padding: 12px;
   position: fixed;
   bottom: 0;
   width: 100%;
-  background-color: #e8d5cc; /* Couleur de fond */
-  display: flex;
-  justify-content: space-around;
-  padding: 10px 0;
-  border-top: 1px solid #bda18a;
+  box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .nav-btn {
   background: none;
   border: none;
-  color: #c49d83; /* Couleur du texte */
-  font-size: 1em;
-  cursor: pointer;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px 16px;
+  transition: 0.3s;
 }
 
-.nav-btn:focus {
-  outline: none;
+.nav-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
 }

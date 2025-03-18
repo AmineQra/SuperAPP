@@ -1,49 +1,50 @@
+.clickable-title {
+  cursor: pointer;
+  color: #e65100;
+  transition: color 0.3s ease-in-out;
+}
+
+.clickable-title:hover {
+  color: #ff9800;
+}
+
+img {
+  width: 120px;
+  height: 120px;
+  border-radius: 20%;
+}
+
 .recipe-card {
-  margin: 8px;
-  padding: 8px;
+  margin: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #fff3e0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+  position: relative;
 }
 
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.actions {
-  display: flex;
-  gap: 4px;
-}
-
-.actions button {
-  width: 32px;
-  height: 32px;
+  border-bottom: 2px solid #ff9800;
+  padding-bottom: 8px;
 }
 
 .card-content {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
+  overflow: hidden;
 }
 
-img {
-  width: 120px;
-  height: 120px;
-  border-radius: 20% 5% !important;
-}
-
-.section-title {
-  font-size: 14px;
-  font-weight: bold;
-  margin-top: 8px;
-}
-
-mat-chip.ingredient {
-  background-color: #e0e0e0;
-  color: #333;
-}
-
-mat-chip.meal {
-  background-color: #ffcc80;
-  color: #d84315;
-  font-weight: bold;
+.chip-container {
+  position: absolute;
+  bottom: -31px;
+  left: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 100%;
+  z-index: -1;
 }

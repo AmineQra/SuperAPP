@@ -21,6 +21,20 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class RecipesComponent implements OnInit {
   public recipes: Recipe[] | undefined;
+  showDetails: boolean = false;
+  arrowDirection: string = '▼';
+
+  changeArrowDirection() {
+    if (this.arrowDirection == '▲') this.arrowDirection = '▼';
+    else {
+      this.arrowDirection = '▲';
+    }
+  }
+
+  toggleDetails() {
+    this.showDetails = !this.showDetails;
+    this.changeArrowDirection();
+  }
 
   constructor(private recipeService: RecipesService) {}
 
