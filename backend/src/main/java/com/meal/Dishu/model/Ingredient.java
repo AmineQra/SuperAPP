@@ -26,7 +26,7 @@ public class Ingredient {
 
     private double quantity;
 
-    private double proteine;
+    private double protein;
 
     private double carbs;
 

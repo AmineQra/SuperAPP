@@ -30,7 +30,7 @@ public class RecipeController {
     private final RecipeService recipeService;
 
     @GetMapping
-    public ResponseEntity<List<Recipe>> getAllRecipes() {
+     public ResponseEntity<List<Recipe>> getAllRecipes() {
         List<Recipe> recipes = recipeService.getAllRecipes();
         return ResponseEntity.ok(recipes);
     }
@@ -42,7 +42,7 @@ public class RecipeController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Recipe> createRecipe(@Valid @RequestBody RecipeRequestDto recipeRequestDto) {
+     public ResponseEntity<Recipe> createRecipe(@Valid @RequestBody RecipeRequestDto recipeRequestDto) {
         Recipe newRecipe = recipeService.createRecipe(recipeRequestDto);
         return ResponseEntity.ok(newRecipe);
     }

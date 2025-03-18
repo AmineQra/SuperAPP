@@ -37,7 +37,7 @@ public class IngredientService {
         Ingredient ingredient = Ingredient.builder()
                 .name(ingredientRequestDto.getName())
                 .quantity(ingredientRequestDto.getQuantity())
-                .proteine(ingredientRequestDto.getProteine())
+                .protein(ingredientRequestDto.getProtein())
                 .carbs(ingredientRequestDto.getCarbs())
                 .fat(ingredientRequestDto.getFat())
                 .build();
