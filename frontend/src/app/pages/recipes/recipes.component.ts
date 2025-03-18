@@ -23,12 +23,25 @@ export class RecipesComponent implements OnInit {
   public recipes: Recipe[] | undefined;
   showDetails: boolean = false;
   arrowDirection: string = '▼';
+  showModal: boolean = false;
 
   changeArrowDirection() {
     if (this.arrowDirection == '▲') this.arrowDirection = '▼';
     else {
       this.arrowDirection = '▲';
     }
+  }
+
+  closeModal() {
+    this.showModal = false;
+  }
+
+  saveRecipe() {
+    console.log('recipe saved');
+  }
+
+  openModal() {
+    this.showModal = !this.showModal;
   }
 
   toggleDetails() {
@@ -38,15 +51,32 @@ export class RecipesComponent implements OnInit {
 
   constructor(private recipeService: RecipesService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getRecipes();
+  }
 
   public getRecipes(): void {
     try {
       this.recipeService.getRecipes().subscribe((response: Recipe[]) => {
-        this.recipes = response;
+        const uniqueRecipes = new Map(
+          response.map((recipe) => [recipe.id, recipe])
+        );
+        this.recipes = Array.from(uniqueRecipes.values());
       });
     } catch (error) {
       alert(error);
     }
+  }
+
+  public deleteRecipe(recipeId: number): void {
+    this.recipeService.deleteRecipe(recipeId).subscribe({
+      next: () => {
+        console.log(`Recipe with ID ${recipeId} deleted successfully`);
+        this.recipes = this.recipes?.filter((recipe) => recipe.id !== recipeId);
+      },
+      error: (err) => {
+        console.error('Error deleting recipe:', err);
+      },
+    });
   }
 }
