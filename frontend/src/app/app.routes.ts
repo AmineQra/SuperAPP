@@ -24,6 +24,7 @@ export const routes: Routes = [
     component: RecipesComponent,
     data: { pageTitle: 'Recipes' },
     title: 'Recipes Page - Dishu',
+    runGuardsAndResolvers: 'always',
   },
   {
     path: 'planning',

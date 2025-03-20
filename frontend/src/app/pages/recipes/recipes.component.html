@@ -1,8 +1,14 @@
-<mat-card class="recipe-card mt-5" *ngFor="let recipe of recipes">
+<div>
+  <app-searchbar
+    class="flex justify-center items-center border-1 rounded m-4"
+  ></app-searchbar>
+</div>
+@for(recipe of recipes; track recipe) {
+<mat-card class="recipe-card mt-5">
   <div class="card-header">
     <mat-card-title>
-      <h4 (click)="toggleDetails()" class="clickable-title">
-        {{ recipe.name }} {{ arrowDirection }}
+      <h4 (click)="toggleDetails(1)" class="clickable-title">
+        1 {{ arrowDirection }}
       </h4>
     </mat-card-title>
     <div class="actions">
@@ -12,13 +18,13 @@
       <button mat-icon-button color="accent">
         <mat-icon>edit</mat-icon>
       </button>
-      <button (click)="deleteRecipe(recipe.id)" mat-icon-button color="warn">
+      <button (click)="deleteRecipe(1)" mat-icon-button color="warn">
         <mat-icon>delete</mat-icon>
       </button>
     </div>
   </div>
 
-  <div class="card-content" *ngIf="showDetails">
+  <div class="card-content" *ngIf="showDetailsMap[1]">
     <img mat-card-image src="img/pizza.jpg" alt="Image de la recette" />
     <div class="text-content">
       <h6 class="section-title">Ingrédients</h6>
@@ -35,6 +41,7 @@
     <mat-chip class="!bg-green-300"> dîner </mat-chip>
   </mat-chip-set>
 </mat-card>
+}
 
 <!-- Button to open the modal -->
 <div

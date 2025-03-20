@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Recipe } from '../../core/models/recipe';
 import { RecipesService } from '../../core/services/recipes/recipes.service';
 import { CommonModule } from '@angular/common';
@@ -6,6 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { SearchbarComponent } from '../../shared/components/searchbar/searchbar.component';
 
 @Component({
   selector: 'app-recipes',
@@ -15,13 +16,14 @@ import { MatIconModule } from '@angular/material/icon';
     MatChipsModule,
     MatButtonModule,
     MatIconModule,
+    SearchbarComponent,
   ],
   templateUrl: './recipes.component.html',
   styleUrl: './recipes.component.css',
 })
-export class RecipesComponent implements OnInit {
+export class RecipesComponent implements OnInit, OnDestroy {
   public recipes: Recipe[] | undefined;
-  showDetails: boolean = false;
+  showDetailsMap: { [key: number]: boolean } = {};
   arrowDirection: string = '▼';
   showModal: boolean = false;
 
@@ -44,9 +46,8 @@ export class RecipesComponent implements OnInit {
     this.showModal = !this.showModal;
   }
 
-  toggleDetails() {
-    this.showDetails = !this.showDetails;
-    this.changeArrowDirection();
+  toggleDetails(recipeId: number) {
+    this.showDetailsMap[recipeId] = !this.showDetailsMap[recipeId];
   }
 
   constructor(private recipeService: RecipesService) {}
@@ -55,17 +56,18 @@ export class RecipesComponent implements OnInit {
     this.getRecipes();
   }
 
+  ngOnDestroy(): void {
+    this.recipes = [];
+  }
+
   public getRecipes(): void {
-    try {
-      this.recipeService.getRecipes().subscribe((response: Recipe[]) => {
-        const uniqueRecipes = new Map(
-          response.map((recipe) => [recipe.id, recipe])
-        );
-        this.recipes = Array.from(uniqueRecipes.values());
-      });
-    } catch (error) {
-      alert(error);
-    }
+    this.recipeService.getRecipes().subscribe((response: Recipe[]) => {
+      console.table(response);
+      this.recipes = [];
+      console.log(this.recipes);
+      this.recipes = response;
+      console.table(this.recipes);
+    });
   }
 
   public deleteRecipe(recipeId: number): void {
