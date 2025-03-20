@@ -24,10 +24,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/custom-theme.scss",
-              "src/styles.css"
-            ],
+            "styles": ["src/custom-theme.scss", "src/styles.css"],
             "scripts": [],
             "server": "src/main.server.ts",
             "outputMode": "server",
@@ -36,6 +33,20 @@
             }
           },
           "configurations": {
+            "dev": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.development.ts"
+                }
+              ]
+            },
             "production": {
               "budgets": [
                 {
@@ -73,6 +84,9 @@
             },
             "development": {
               "buildTarget": "frontend:build:development"
+            },
+            "dev": {
+              "buildTarget": "frontend:build:dev"
             }
           },
           "defaultConfiguration": "development"
