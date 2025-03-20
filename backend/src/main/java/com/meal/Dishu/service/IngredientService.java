@@ -23,6 +23,11 @@ public class IngredientService {
         return ingredientRepository.findAll();
     }
 
+    public List<Ingredient> searchIngredients(String search) {
+        return ingredientRepository.fuzzySearchIngredients(search);
+    }
+    
+
     public Optional<Ingredient> getIngredientById(Long id) {
         return ingredientRepository.findById(id);
     }

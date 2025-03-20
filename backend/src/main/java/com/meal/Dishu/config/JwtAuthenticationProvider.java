@@ -1,12 +1,13 @@
 package com.meal.Dishu.config;
 
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.server.ResponseStatusException;
 
 public class JwtAuthenticationProvider implements AuthenticationProvider {
 
@@ -25,7 +26,8 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
         if (userDetails == null) {
-            throw new UsernameNotFoundException("User not found");
+                    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+
         }
 
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

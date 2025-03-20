@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.meal.Dishu.dto.IngredientRequestDto;
@@ -28,8 +29,14 @@ public class IngredientController {
     private final IngredientService ingredientService;
 
     @GetMapping
-    public ResponseEntity<List<Ingredient>> getAllIngredients() {
-        List<Ingredient> ingredients = ingredientService.getAllIngredients();
+    public ResponseEntity<List<Ingredient>> getAllIngredients(@RequestParam(required = false) String search) {
+        List<Ingredient> ingredients;
+    
+        if (search != null && !search.isEmpty()) {
+            ingredients = ingredientService.searchIngredients(search);
+        } else {
+            ingredients = ingredientService.getAllIngredients();
+        }
         return ResponseEntity.ok(ingredients);
     }
 
