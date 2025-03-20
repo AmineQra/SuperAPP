@@ -19,8 +19,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
@@ -65,31 +63,11 @@ public class User implements UserDetails {
         return email;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getFullName() {
-        return (firstName + " " + lastName );
-    }
-
     @Override
     public String getPassword() {
         return password;
     }
 
-    @PrePersist
-    @PreUpdate
-    public void encodePassword() {
-        if (this.password != null && !this.password.isEmpty()) {
-            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            this.password = encoder.encode(this.password);
-        }
-    }
 
     public void setPassword(String password, BCryptPasswordEncoder passwordEncoder) {
         if (password != null && !password.isEmpty()) {
