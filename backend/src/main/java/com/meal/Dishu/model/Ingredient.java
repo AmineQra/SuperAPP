@@ -26,10 +26,10 @@ public class Ingredient {
 
     private double quantity;
 
-    private double protein;
+    private double proteins;
 
     private double carbs;
 
-    private double fat;
+    private double fats;
     
 }

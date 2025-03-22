@@ -1,8 +1,10 @@
 package com.meal.Dishu.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,10 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.meal.Dishu.dto.RecipeRequestDto;
 import com.meal.Dishu.model.Recipe;
+import com.meal.Dishu.model.RecipeDocument;
+import com.meal.Dishu.service.RecipeSearchService;
 import com.meal.Dishu.service.RecipeService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -28,6 +34,7 @@ import lombok.RequiredArgsConstructor;
 public class RecipeController {
     
     private final RecipeService recipeService;
+    private final RecipeSearchService recipeSearchService;
 
     @GetMapping
      public ResponseEntity<List<Recipe>> getAllRecipes() {
@@ -52,5 +59,24 @@ public class RecipeController {
         recipeService.deleteRecipe(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/search")
+    public ResponseEntity<List<Recipe>> searchRecipes(@RequestBody String query) {
+        try {
+            List<RecipeDocument> searchResult = recipeSearchService.searchRecipes(query);
+            List<Recipe> recipes = recipeService.findAllById(searchResult);
+            return ResponseEntity.ok(recipes);
+        }
+        catch(IOException e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.SC_INTERNAL_SERVER_ERROR).build();
+        }
+        catch(Exception e) {
+            e.printStackTrace();  // Log the exception details for debugging
+            return ResponseEntity.status(HttpStatus.SC_INTERNAL_SERVER_ERROR).build();
+        }
+        
+    }
+    
     
 }

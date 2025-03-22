@@ -30,6 +30,9 @@ class RecipeServiceTest {
     @Mock
     private IngredientRepository ingredientRepository;
 
+    @Mock
+    private RecipeSearchService recipeSearchRepository;
+
     @InjectMocks
     private RecipeService recipeService;
 
@@ -80,10 +83,13 @@ class RecipeServiceTest {
 
     @Test
     void shouldDeleteRecipeSuccessfully() {
-        doNothing().when(recipeRepository).deleteById(1L);
-
-        recipeService.deleteRecipe(1L);
-
-        verify(recipeRepository, times(1)).deleteById(1L);
+        Long recipeId = 1L;
+        doNothing().when(recipeRepository).deleteById(recipeId);
+        doNothing().when(recipeSearchRepository).deleteById(recipeId.toString());
+        
+        recipeService.deleteRecipe(recipeId);
+        
+        verify(recipeRepository, times(1)).deleteById(recipeId);
+        verify(recipeSearchRepository, times(1)).deleteById(recipeId.toString());
     }
 }

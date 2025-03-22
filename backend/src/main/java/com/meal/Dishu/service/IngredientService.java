@@ -42,9 +42,9 @@ public class IngredientService {
         Ingredient ingredient = Ingredient.builder()
                 .name(ingredientRequestDto.getName())
                 .quantity(ingredientRequestDto.getQuantity())
-                .protein(ingredientRequestDto.getProtein())
+                .proteins(ingredientRequestDto.getProtein())
                 .carbs(ingredientRequestDto.getCarbs())
-                .fat(ingredientRequestDto.getFat())
+                .fats(ingredientRequestDto.getFat())
                 .build();
 
         ingredientRepository.save(ingredient);
