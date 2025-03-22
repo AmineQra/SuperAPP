@@ -1,6 +1,5 @@
 package com.meal.Dishu.service;
 
-import com.meal.Dishu.dto.RecipeRequestDto;
 import com.meal.Dishu.model.Ingredient;
 import com.meal.Dishu.model.Recipe;
 import com.meal.Dishu.repository.IngredientRepository;
@@ -43,10 +42,8 @@ class RecipeServiceTest {
 
     @Test
     void shouldCreateRecipeSuccessfully() {
-        Set<Long> dtoIngredients = Set.of(1L);
         Ingredient ingredient = new Ingredient(1L, "pomme", 2.2, 2.2, 2.2, 2.2);
         Set<Ingredient> ingredients = Set.of(ingredient);
-        RecipeRequestDto recipeRequestDto = new RecipeRequestDto("Pizza", "Delicious cheese pizza", dtoIngredients, null);
         Recipe recipe = new Recipe(1L, "Pizza", "Delicious cheese pizza", ingredients, null);
         when(recipeRepository.save(any(Recipe.class))).thenReturn(recipe);
         when(ingredientRepository.save(any(Ingredient.class))).thenReturn(ingredient);
