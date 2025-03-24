@@ -41,7 +41,7 @@ public class IngredientSearchService {
             .collect(Collectors.toList());
     }
 
-     public void saveRecipe(Ingredient ingredient) {
+     public void saveIngredient(Ingredient ingredient) {
         IngredientDocument ingredientDocument = new IngredientDocument();
         String ingredientIdString = ingredient.getId().toString();
 

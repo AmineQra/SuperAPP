@@ -10,8 +10,6 @@ import org.springframework.web.server.ResponseStatusException;
 import com.meal.Dishu.dto.IngredientRequestDto;
 import com.meal.Dishu.model.Ingredient;
 import com.meal.Dishu.model.IngredientDocument;
-import com.meal.Dishu.model.Recipe;
-import com.meal.Dishu.model.RecipeDocument;
 import com.meal.Dishu.repository.IngredientRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -31,7 +29,7 @@ public class IngredientService {
         return ingredientRepository.findById(id);
     }
 
-    public void createIngredient(IngredientRequestDto ingredientRequestDto) {
+    public Ingredient createIngredient(IngredientRequestDto ingredientRequestDto) {
         System.out.println("ingredientRequestDto = " + ingredientRequestDto);
 
         if (ingredientRepository.findByName(ingredientRequestDto.getName()).isPresent()) {
@@ -46,13 +44,19 @@ public class IngredientService {
                 .fats(ingredientRequestDto.getFat())
                 .build();
         
-        ingredientRepository.save(ingredient);
+        
+        
+        Ingredient savedIngredient = ingredientRepository.save(ingredient);
+        ingredientSearchService.saveIngredient(savedIngredient);
+
+        return savedIngredient;
     }
 
     public void deleteIngredient(Long id) {
         if (!ingredientRepository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ingredient with ID " + id + " not found");
         }
+        ingredientSearchService.deleteById(id.toString());
         ingredientRepository.deleteById(id);
     }
 
