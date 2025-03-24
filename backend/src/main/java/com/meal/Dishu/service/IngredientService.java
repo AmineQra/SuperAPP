@@ -9,6 +9,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.meal.Dishu.dto.IngredientRequestDto;
 import com.meal.Dishu.model.Ingredient;
+import com.meal.Dishu.model.IngredientDocument;
+import com.meal.Dishu.model.Recipe;
+import com.meal.Dishu.model.RecipeDocument;
 import com.meal.Dishu.repository.IngredientRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -18,15 +21,11 @@ import lombok.RequiredArgsConstructor;
 public class IngredientService {
 
     private final IngredientRepository ingredientRepository;
+    private final IngredientSearchService ingredientSearchService;
 
     public List<Ingredient> getAllIngredients() {
         return ingredientRepository.findAll();
     }
-
-    public List<Ingredient> searchIngredients(String search) {
-        return ingredientRepository.fuzzySearchIngredients(search);
-    }
-    
 
     public Optional<Ingredient> getIngredientById(Long id) {
         return ingredientRepository.findById(id);
@@ -46,7 +45,7 @@ public class IngredientService {
                 .carbs(ingredientRequestDto.getCarbs())
                 .fats(ingredientRequestDto.getFat())
                 .build();
-
+        
         ingredientRepository.save(ingredient);
     }
 
@@ -55,6 +54,11 @@ public class IngredientService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ingredient with ID " + id + " not found");
         }
         ingredientRepository.deleteById(id);
+    }
+
+    public List<Ingredient> findAllById(List<IngredientDocument> ingredientDocuments){
+        List<Long> ingredientsIdList = ingredientDocuments.stream().map(ingredient -> Long.parseLong(ingredient.getId())).toList();
+        return ingredientRepository.findAllById(ingredientsIdList);
     }
 
 }
