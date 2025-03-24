@@ -14,6 +14,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.meal.Dishu.dto.RecipeRequestDto;
+import com.meal.Dishu.enumeration.RecipeType;
 import com.meal.Dishu.model.Recipe;
 import com.meal.Dishu.service.RecipeService;
 
@@ -22,6 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 
 public class RecipeControllerTest {
@@ -50,7 +53,7 @@ public class RecipeControllerTest {
         );
         when(recipeService.getAllRecipes()).thenReturn(recipes);
 
-        mockMvc.perform(get("/api/recipes"))
+        mockMvc.perform(get("/recipes"))
             .andExpect(jsonPath("$.size()")
             .value(2))
             .andExpect(jsonPath("$[0].name").value("Pizza"));
@@ -62,19 +65,21 @@ public class RecipeControllerTest {
         Recipe recipe = new Recipe(1L, "Pizza", "Cheese pizza", null, null);
         when(recipeService.getRecipeById(1L)).thenReturn(Optional.of(recipe));
 
-        mockMvc.perform(get("/api/recipes/1"))
+        mockMvc.perform(get("/recipes/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("Pizza"));
     }
 
     @Test
     void shouldCreateRecipeSuccessfully() throws Exception {
+        RecipeType recipeType = RecipeType.DEJEUNER;
+        RecipeRequestDto recipeRequestDto = new RecipeRequestDto("Pizza", "Delicious cheese pizza", Set.of(1L), Set.of(recipeType));
         Recipe recipe = new Recipe(null, "Pizza", "Delicious cheese pizza", null, null);
-        when(recipeService.createRecipe(any(Recipe.class))).thenReturn(recipe);
+        when(recipeService.createRecipe(any(RecipeRequestDto.class))).thenReturn(recipe);
         
-        mockMvc.perform(post("/api/recipes/add")
+        mockMvc.perform(post("/recipes/add")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(recipe)))
+                .content(objectMapper.writeValueAsString(recipeRequestDto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("Pizza"));
     }
@@ -83,7 +88,7 @@ public class RecipeControllerTest {
     void shouldDeleteRecipe() throws Exception {
         doNothing().when(recipeService).deleteRecipe(1L);
 
-        mockMvc.perform(delete("/api/recipes/delete/1"))
+        mockMvc.perform(delete("/recipes/delete/1"))
                 .andExpect(status().isNoContent());
     }
 

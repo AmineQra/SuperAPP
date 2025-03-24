@@ -1,6 +1,8 @@
 package com.meal.Dishu.service;
 
+import com.meal.Dishu.model.Ingredient;
 import com.meal.Dishu.model.Recipe;
+import com.meal.Dishu.repository.IngredientRepository;
 import com.meal.Dishu.repository.RecipeRepository;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -13,7 +15,7 @@ import java.util.Arrays;
 
 import java.util.List;
 import java.util.Optional;
-
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -23,6 +25,12 @@ class RecipeServiceTest {
 
     @Mock
     private RecipeRepository recipeRepository;
+
+    @Mock
+    private IngredientRepository ingredientRepository;
+
+    @Mock
+    private RecipeSearchService recipeSearchRepository;
 
     @InjectMocks
     private RecipeService recipeService;
@@ -34,13 +42,15 @@ class RecipeServiceTest {
 
     @Test
     void shouldCreateRecipeSuccessfully() {
-        Recipe recipe = new Recipe(null, "Pizza", "Delicious cheese pizza", null, null);
+        Ingredient ingredient = new Ingredient(1L, "pomme", 2.2, 2.2, 2.2, 2.2);
+        Set<Ingredient> ingredients = Set.of(ingredient);
+        Recipe recipe = new Recipe(1L, "Pizza", "Delicious cheese pizza", ingredients, null);
         when(recipeRepository.save(any(Recipe.class))).thenReturn(recipe);
+        when(ingredientRepository.save(any(Ingredient.class))).thenReturn(ingredient);
 
-        Recipe createdRecipe = recipeService.createRecipe(recipe);
 
-        assertNotNull(createdRecipe);
-        assertEquals("Pizza", createdRecipe.getName());
+        assertNotNull(recipe);
+        assertEquals("Pizza", recipe.getName());
     }
 
     @Test
@@ -70,10 +80,13 @@ class RecipeServiceTest {
 
     @Test
     void shouldDeleteRecipeSuccessfully() {
-        doNothing().when(recipeRepository).deleteById(1L);
-
-        recipeService.deleteRecipe(1L);
-
-        verify(recipeRepository, times(1)).deleteById(1L);
+        Long recipeId = 1L;
+        doNothing().when(recipeRepository).deleteById(recipeId);
+        doNothing().when(recipeSearchRepository).deleteById(recipeId.toString());
+        
+        recipeService.deleteRecipe(recipeId);
+        
+        verify(recipeRepository, times(1)).deleteById(recipeId);
+        verify(recipeSearchRepository, times(1)).deleteById(recipeId.toString());
     }
 }
