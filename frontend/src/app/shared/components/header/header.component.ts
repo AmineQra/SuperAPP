@@ -11,13 +11,14 @@ import { filter, map, switchMap } from 'rxjs';
   styleUrl: './header.component.css',
 })
 export class HeaderComponent implements OnInit {
+  showDropdown = false;
   pageTitle: string = 'Home';
   showSearchBar: Boolean = false;
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
 
-  public addSearchBar(data: Data): void {
-    this.showSearchBar = data['pageTitle'] == 'Recipes';
+  public logout() {
+    this.showDropdown = false;
   }
 
   public getPageTitleFromRoute(): void {
@@ -35,7 +36,6 @@ export class HeaderComponent implements OnInit {
       )
       .subscribe((data) => {
         this.pageTitle = data['pageTitle'];
-        this.addSearchBar(data);
       });
   }
 

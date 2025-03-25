@@ -11,6 +11,6 @@ export interface Recipe {
   id: number;
   name: string;
   description: string;
-  ingredient: Set<Ingredient>;
-  type: Set<recipeType>;
+  ingredients: Set<Ingredient>;
+  types: Set<recipeType>;
 }

@@ -1,150 +1,126 @@
-<div>
-  <app-searchbar
-    class="flex justify-center items-center border-1 rounded m-4"
-  ></app-searchbar>
-</div>
-@for(recipe of recipes; track recipe) {
-<mat-card class="recipe-card mt-5">
-  <div class="card-header">
-    <mat-card-title>
-      <h4 (click)="toggleDetails(1)" class="clickable-title">
-        {{ recipe.name }} {{ arrowDirection }}
-      </h4>
-    </mat-card-title>
-    <div class="actions">
-      <button mat-icon-button color="primary">
-        <mat-icon>visibility</mat-icon>
-      </button>
-      <button mat-icon-button color="accent">
-        <mat-icon>edit</mat-icon>
-      </button>
-      <button (click)="deleteRecipe(1)" mat-icon-button color="warn">
-        <mat-icon>delete</mat-icon>
-      </button>
-    </div>
+<div class="min-h-screen bg-[hsl(218deg_50%_91%)] p-4">
+  <!-- Search Bar -->
+  <div class="mb-8">
+    <app-searchbar
+      class="bg-white shadow-sm rounded-xl max-w-md mx-auto p-3 transition-all duration-200 focus-within:ring-1 focus-within:ring-[hsl(233deg_36%_38%)]"
+    ></app-searchbar>
   </div>
 
-  <div class="card-content" *ngIf="showDetailsMap[1]">
-    <img mat-card-image src="img/pizza.jpg" alt="Image de la recette" />
-    <div class="text-content">
-      <h6 class="section-title">Ingrédients</h6>
-      <mat-chip-set>
-        <mat-chip class=""> cheese </mat-chip>
-        <mat-chip class=""> pâte à pizza </mat-chip>
-        <mat-chip class=""> persil </mat-chip>
-        <mat-chip class=""> ... </mat-chip>
-      </mat-chip-set>
-    </div>
-  </div>
-  <mat-chip-set class="chip-container">
-    <mat-chip class="!bg-blue-300"> déjeuner </mat-chip>
-    <mat-chip class="!bg-green-300"> dîner </mat-chip>
-  </mat-chip-set>
-</mat-card>
-}
-
-<!-- Button to open the modal -->
-<div
-  class="absolute inset-x-0 bottom-16 h-16 flex justify-content-center align-content-center align-items-center"
->
-  <button
-    (click)="openModal()"
-    type="button"
-    class="bg-green-300 w-10 h-10 rounded-circle shadow-sm"
-  >
-    ✚
-  </button>
-</div>
-
-<!-- Modal for recipe information -->
-<div
-  *ngIf="showModal"
-  class="container-fluid fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50"
->
-  <div class="bg-white p-6 rounded-lg w-92">
-    <h2 class="text-xl font-semibold mb-4 flex justify-center">
-      Nouvelle recette 🔥
-    </h2>
-    <div>
-      <label for="recipe-name" class="block text-sm font-medium"
-        >Nom de la recette</label
-      >
-      <input
-        id="recipe-name"
-        type="text"
-        class="w-full p-2 mt-1 border rounded"
-      />
-    </div>
-
-    <div class="mt-4">
-      <label for="ingredients" class="block text-sm font-medium"
-        >Ingrédients</label
-      >
-      <div class="w-full p-2 mt-1 border rounded">
-        <input
-          type="text"
-          placeholder="Rechercher un ingrédient"
-          class="w-full p-2 border rounded"
-        />
-        <div class="mt-2 space-y-2">
-          <div>
-            <button
-              class="w-full text-left p-2 bg-gray-100 rounded-md hover:bg-gray-200"
+  <!-- Recipe Cards -->
+  <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    @for(recipe of recipes; track recipe) {
+    <mat-card
+      class="bg-[hsl(213deg_85%_97%)] rounded-3xl shadow-sm overflow-hidden transition-all duration-200 hover:shadow-md"
+    >
+      <div class="p-4">
+        <div class="flex justify-between items-center">
+          <mat-card-title>
+            <h4
+              (click)="toggleDetails(recipe.id)"
+              class="text-[hsl(233deg_36%_38%)] font-semibold cursor-pointer hover:underline"
             >
-              ingredient1
+              {{ recipe.name }}
+              <span class="ml-2">{{
+                showDetailsMap[recipe.id] ? "▼" : "▶"
+              }}</span>
+            </h4>
+          </mat-card-title>
+
+          <div class="flex gap-2">
+            <button
+              mat-icon-button
+              class="!text-[hsl(233deg_36%_38%)] hover:!bg-[hsl(233deg_36%_38%/10%)]"
+            >
+              <mat-icon>visibility</mat-icon>
+            </button>
+            <button
+              mat-icon-button
+              class="!text-[hsl(233deg_36%_38%)] hover:!bg-[hsl(233deg_36%_38%/10%)]"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button
+              (click)="deleteRecipe(recipe.id)"
+              mat-icon-button
+              class="!text-red-500 hover:!bg-red-100"
+            >
+              <mat-icon>delete</mat-icon>
             </button>
           </div>
         </div>
-      </div>
-      <div class="mt-4">
-        <h6>Ingrédients sélectionnés</h6>
-        <div class="mt-2">
-          <mat-chip>ingredient 1</mat-chip>
+
+        <!-- Animated Content -->
+        <div [@slideInOut]="showDetailsMap[recipe.id]" class="overflow-hidden">
+          <div class="mt-4">
+            <img
+              mat-card-image
+              src="img/pizza.jpg"
+              alt="Image de la recette"
+              class="rounded-xl"
+            />
+            <div class="mt-4">
+              <h6 class="text-[hsl(233deg_36%_38%)] font-medium mb-2">
+                Ingrédients
+              </h6>
+              <mat-chip-set class="flex flex-wrap gap-2">
+                <mat-chip
+                  *ngFor="let ingredient of recipe.ingredients"
+                  class="!bg-[hsl(233deg_36%_38%/10%)] !text-[hsl(233deg_36%_38%)]"
+                >
+                  {{ ingredient }}
+                </mat-chip>
+              </mat-chip-set>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Checkboxes for meals -->
-    <div class="mt-4">
-      <h6 class="text-sm font-medium">Type de repas</h6>
-      <div class="flex space-x-4">
-        <label class="flex items-center">
-          <input type="checkbox" class="mr-2" />
-          Petit Déjeuner
-        </label>
-        <label class="flex items-center">
-          <input type="checkbox" class="mr-2" />
-          Déjeuner
-        </label>
-        <label class="flex items-center">
-          <input type="checkbox" class="mr-2" />
-          Dîner
-        </label>
-        <label class="flex items-center">
-          <input type="checkbox" class="mr-2" />
-          Goûter
-        </label>
+        <mat-chip-set class="mt-4 flex flex-wrap gap-2">
+          <mat-chip
+            *ngFor="let mealType of recipe.types"
+            class="!bg-[hsl(233deg_36%_38%/20%)] !text-[hsl(233deg_36%_38%)]"
+          >
+            {{ mealType }}
+          </mat-chip>
+        </mat-chip-set>
       </div>
-    </div>
+    </mat-card>
+    }
+  </div>
 
-    <div class="mt-4 flex justify-content-between gap-1">
+  <!-- Floating Action Button -->
+  <div class="fixed bottom-8 right-8">
+    <button
+      (click)="openModal()"
+      class="bg-[hsl(233deg_36%_38%)] text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center text-2xl hover:scale-110 transition-transform duration-200"
+    >
+      ✚
+    </button>
+  </div>
+
+  <!-- Modal -->
+  <div
+    *ngIf="showModal"
+    class="fixed inset-0 bg-[hsl(218deg_50%_91%/50%)] backdrop-blur-sm flex items-center justify-center z-50"
+    @modalAnimation
+  >
+    <div
+      class="bg-[hsl(213deg_85%_97%)] rounded-3xl shadow-sm p-6 w-full max-w-md mx-4 transition-all duration-300 transform scale-95"
+      [class.scale-100]="showModal"
+    >
+      <!-- ... (keep your existing modal content, update classes as below) ... -->
+
+      <!-- Update inputs -->
+      <input
+        type="text"
+        class="w-full p-3 rounded-xl border-2 border-transparent focus:border-[hsl(233deg_36%_38%)] focus:ring-1 focus:ring-[hsl(233deg_36%_38%)] outline-none transition-all duration-200"
+      />
+
+      <!-- Update buttons -->
       <button
         (click)="closeModal()"
-        class="bg-red-200 text-gray-700 py-2 px-4 rounded-md"
+        class="bg-red-200 text-gray-700 py-2 px-4 rounded-xl font-medium hover:scale-105 transition-transform"
       >
         Annuler
-      </button>
-      <button
-        (click)="closeModal()"
-        class="bg-blue-300 text-gray-700 py-2 px-4 rounded-md"
-      >
-        Recette aléatoire
-      </button>
-      <button
-        (click)="saveRecipe()"
-        class="bg-green-500 text-white py-2 px-2 rounded-md"
-      >
-        Sauvegarder
       </button>
     </div>
   </div>

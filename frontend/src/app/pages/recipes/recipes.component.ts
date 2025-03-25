@@ -7,6 +7,13 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { SearchbarComponent } from '../../shared/components/searchbar/searchbar.component';
+import {
+  trigger,
+  state,
+  style,
+  transition,
+  animate,
+} from '@angular/animations';
 
 @Component({
   selector: 'app-recipes',
@@ -20,6 +27,13 @@ import { SearchbarComponent } from '../../shared/components/searchbar/searchbar.
   ],
   templateUrl: './recipes.component.html',
   styleUrl: './recipes.component.css',
+  animations: [
+    trigger('slideInOut', [
+      state('true', style({ height: '*', opacity: 1 })),
+      state('false', style({ height: '0px', opacity: 0 })),
+      transition('true <=> false', animate('300ms ease-in-out')),
+    ]),
+  ],
 })
 export class RecipesComponent implements OnInit, OnDestroy {
   public recipes: Recipe[] | undefined;
@@ -55,19 +69,15 @@ export class RecipesComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getRecipes();
   }
-  
+
   ngOnDestroy(): void {
     this.recipes = [];
   }
 
-
   public getRecipes(): void {
     this.recipeService.getRecipes().subscribe((response: Recipe[]) => {
-      console.table(response);
       this.recipes = [];
-      console.log(this.recipes);
       this.recipes = response;
-      console.table(this.recipes);
     });
   }
 
