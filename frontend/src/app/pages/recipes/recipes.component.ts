@@ -55,10 +55,11 @@ export class RecipesComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getRecipes();
   }
-
+  
   ngOnDestroy(): void {
     this.recipes = [];
   }
+
 
   public getRecipes(): void {
     this.recipeService.getRecipes().subscribe((response: Recipe[]) => {
