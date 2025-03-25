@@ -4,9 +4,15 @@ import { RecipesComponent } from './pages/recipes/recipes.component';
 import { HomeComponent } from './pages/home/home.component';
 import { SearchComponent } from './pages/search/search.component';
 import { PlanningComponent } from './pages/planning/planning.component';
+import { LoginComponent } from './pages/auth/login/login.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  {
+    path: '',
+    component: LoginComponent,
+    data: { pageTitle: 'Login' },
+    title: 'Login Page - Dishu',
+  },
   {
     path: 'home',
     component: HomeComponent,
@@ -24,6 +30,7 @@ export const routes: Routes = [
     component: RecipesComponent,
     data: { pageTitle: 'Recipes' },
     title: 'Recipes Page - Dishu',
+    runGuardsAndResolvers: 'always',
   },
   {
     path: 'planning',

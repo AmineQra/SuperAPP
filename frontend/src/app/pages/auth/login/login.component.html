@@ -1,0 +1,104 @@
+<div
+  class="h-screen bg-[hsl(218deg_50%_91%)] flex items-center justify-center select-none"
+>
+  <form
+    [formGroup]="loginForm"
+    (ngSubmit)="onLogin()"
+    class="bg-[hsl(213deg_85%_97%)] p-8 rounded-3xl shadow-sm flex flex-col gap-8 max-w-xs w-full transition-all duration-300"
+  >
+    <!-- Logo -->
+    <div class="relative -mt-12 mx-auto animate-[spin_1s_ease-in]">
+      <img
+        class="w-28 h-28 my-16 rounded-3xl shadow-sm transform transition hover:scale-110"
+        src="img/logo.png"
+      />
+    </div>
+
+    <!-- Email Input -->
+    <div
+      class="group bg-white shadow-sm p-3 rounded-xl space-y-2 -mt-12 transition-all duration-200 border-2 border-transparent focus-within:border-[hsl(233deg_36%_38%)] focus-within:ring-1 focus-within:ring-[hsl(233deg_36%_38%)]"
+    >
+      <div class="flex items-center gap-2 px-2 py-1.5 rounded-md">
+        <span
+          class="text-gray-400 transition-colors duration-200"
+          [class.text-[hsl(233deg_36%_38%)]="emailFocused"
+          >✉️</span
+        >
+        <input
+          type="email"
+          formControlName="email"
+          (focus)="emailFocused = true"
+          (blur)="emailFocused = false"
+          placeholder="Username@gmail.com"
+          class="w-full outline-none placeholder:text-gray-400 placeholder:text-sm focus:placeholder-transparent"
+        />
+      </div>
+    </div>
+
+    <!-- Password Input -->
+    <div
+      class="group bg-white shadow-sm p-3 rounded-xl space-y-2 transition-all duration-200 border-2 border-transparent focus-within:border-[hsl(233deg_36%_38%)] focus-within:ring-1 focus-within:ring-[hsl(233deg_36%_38%)]"
+    >
+      <div class="flex items-center gap-2 px-2 py-1.5 rounded-md relative">
+        <span
+          class="text-gray-400 transition-colors duration-200"
+          [class.text-[hsl(233deg_36%_38%)]="passwordFocused"
+          >🔑</span
+        >
+        <input
+          type="password"
+          formControlName="password"
+          (focus)="passwordFocused = true"
+          (blur)="passwordFocused = false"
+          placeholder="············"
+          class="w-full outline-none placeholder:text-gray-400 placeholder:text-sm focus:placeholder-transparent"
+        />
+      </div>
+    </div>
+
+    <!-- Login Button -->
+    <button
+      type="submit"
+      [disabled]="loginForm.invalid || isLoading"
+      class="bg-[hsl(233deg_36%_38%)] text-white py-3 rounded font-semibold shadow-lg transform transition-all duration-200 hover:scale-105 hover:shadow-xl active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed relative"
+    >
+      <span class="flex items-center justify-center">
+        <span>{{ isLoading ? "Logging in..." : "Login" }}</span>
+        <svg
+          *ngIf="isLoading"
+          class="w-5 h-5 ml-2 animate-spin"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            class="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            stroke-width="4"
+          ></circle>
+          <path
+            class="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+          ></path>
+        </svg>
+      </span>
+    </button>
+
+    <!-- Footer Links -->
+    <div class="flex justify-between text-gray-500 text-sm pb-16">
+      <a
+        routerLink="/signup"
+        class="hover:underline hover:text-[hsl(233deg_36%_38%)] transition-colors"
+        >Sign up</a
+      >
+      <a
+        routerLink="/forgot-password"
+        class="hover:underline hover:text-[hsl(233deg_36%_38%)] transition-colors"
+        >Forgot Password?</a
+      >
+    </div>
+  </form>
+</div>

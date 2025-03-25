@@ -11,7 +11,7 @@ import {
   withFetch,
   withInterceptors,
 } from '@angular/common/http';
-import { AuthInterceptorService } from './core/interceptors/auth-interceptor.service';
+import { jwtInterceptor } from './core/interceptors/JwtInterceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -19,6 +19,6 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideClientHydration(withEventReplay()),
-    provideHttpClient(withFetch(), withInterceptors([AuthInterceptorService])),
+    provideHttpClient(withFetch(), withInterceptors([jwtInterceptor])),
   ],
 };

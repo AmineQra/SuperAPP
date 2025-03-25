@@ -1,0 +1,7 @@
+/* Add custom styles if needed */
+:host {
+  display: block;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}

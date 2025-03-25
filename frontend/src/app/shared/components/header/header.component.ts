@@ -2,11 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Data, NavigationEnd, Router } from '@angular/router';
 import { filter, map, switchMap } from 'rxjs';
-import { SearchbarComponent } from '../searchbar/searchbar.component';
 
 @Component({
   selector: 'app-header',
-  imports: [CommonModule, SearchbarComponent],
+  imports: [CommonModule],
   standalone: true,
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',

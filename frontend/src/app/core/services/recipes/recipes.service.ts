@@ -24,8 +24,7 @@ export class RecipesService {
   }
 
   public deleteRecipe(recipeId: number): Observable<void> {
-    return this.http.delete<void>(
-      `${this.apiServerUrl}/api/recipes/delete/${recipeId}`
-    );
+    let urlLink = `${this.apiServerUrl}/api/recipes/delete/${recipeId}`;
+    return this.http.delete<void>(urlLink);
   }
 }
