@@ -1,97 +1,109 @@
-<div class="min-h-screen bg-[hsl(218deg_50%_91%)] p-4">
+<div class="min-h-screen bg-[hsl(218deg_50%_91%)] p-4 pb-24">
+  <!-- Added pb-24 for footer space -->
   <!-- Search Bar -->
-  <div class="mb-8">
+  <div class="mb-4 sticky top-0 bg-[hsl(218deg_50%_91%)] z-10 pt-2">
     <app-searchbar
-      class="bg-white shadow-sm rounded-xl max-w-md mx-auto p-3 transition-all duration-200 focus-within:ring-1 focus-within:ring-[hsl(233deg_36%_38%)]"
+      class="bg-white shadow-sm rounded-xl w-full p-3 transition-all duration-200 focus-within:ring-1 focus-within:ring-[hsl(233deg_36%_38%)]"
     ></app-searchbar>
   </div>
 
-  <!-- Recipe Cards -->
-  <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+  <!-- Recipe List -->
+  <div class="space-y-3">
     @for(recipe of recipes; track recipe) {
-    <mat-card
-      class="bg-[hsl(213deg_85%_97%)] rounded-3xl shadow-sm overflow-hidden transition-all duration-200 hover:shadow-md"
+    <div
+      class="bg-white rounded-xl shadow-sm p-3 transition-all duration-200"
+      [class.ring-1]="showDetailsMap[recipe.id]"
+      [class.ring-[hsl(233deg_36%_38%)]="showDetailsMap[recipe.id]"
     >
-      <div class="p-4">
-        <div class="flex justify-between items-center">
-          <mat-card-title>
+      <!-- Compact View -->
+      <div class="flex items-center gap-3">
+        <!-- Thumbnail -->
+        <img
+          src="img/pizza.jpg"
+          alt="Recipe thumbnail"
+          class="w-16 h-16 rounded-lg object-cover"
+        />
+
+        <!-- Title and Actions -->
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center justify-between gap-2">
             <h4
               (click)="toggleDetails(recipe.id)"
-              class="text-[hsl(233deg_36%_38%)] font-semibold cursor-pointer hover:underline"
+              class="text-[hsl(233deg_36%_38%)] font-medium truncate"
             >
               {{ recipe.name }}
-              <span class="ml-2">{{
-                showDetailsMap[recipe.id] ? "▼" : "▶"
-              }}</span>
             </h4>
-          </mat-card-title>
-
-          <div class="flex gap-2">
-            <button
-              mat-icon-button
-              class="!text-[hsl(233deg_36%_38%)] hover:!bg-[hsl(233deg_36%_38%/10%)]"
-            >
-              <mat-icon>visibility</mat-icon>
-            </button>
-            <button
-              mat-icon-button
-              class="!text-[hsl(233deg_36%_38%)] hover:!bg-[hsl(233deg_36%_38%/10%)]"
-            >
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button
-              (click)="deleteRecipe(recipe.id)"
-              mat-icon-button
-              class="!text-red-500 hover:!bg-red-100"
-            >
-              <mat-icon>delete</mat-icon>
-            </button>
-          </div>
-        </div>
-
-        <!-- Animated Content -->
-        <div [@slideInOut]="showDetailsMap[recipe.id]" class="overflow-hidden">
-          <div class="mt-4">
-            <img
-              mat-card-image
-              src="img/pizza.jpg"
-              alt="Image de la recette"
-              class="rounded-xl"
-            />
-            <div class="mt-4">
-              <h6 class="text-[hsl(233deg_36%_38%)] font-medium mb-2">
-                Ingrédients
-              </h6>
-              <mat-chip-set class="flex flex-wrap gap-2">
-                <mat-chip
-                  *ngFor="let ingredient of recipe.ingredients"
-                  class="!bg-[hsl(233deg_36%_38%/10%)] !text-[hsl(233deg_36%_38%)]"
-                >
-                  {{ ingredient }}
-                </mat-chip>
-              </mat-chip-set>
+            <div class="flex gap-1">
+              <button
+                mat-icon-button
+                class="!text-gray-500 hover:!bg-[hsl(233deg_36%_38%/10%)] !w-8 !h-8"
+              >
+                <mat-icon class="!text-lg">edit</mat-icon>
+              </button>
+              <button
+                (click)="deleteRecipe(recipe.id)"
+                mat-icon-button
+                class="!text-red-400 hover:!bg-red-100 !w-8 !h-8"
+              >
+                <mat-icon class="!text-lg">delete</mat-icon>
+              </button>
             </div>
           </div>
-        </div>
 
-        <mat-chip-set class="mt-4 flex flex-wrap gap-2">
-          <mat-chip
-            *ngFor="let mealType of recipe.types"
-            class="!bg-[hsl(233deg_36%_38%/20%)] !text-[hsl(233deg_36%_38%)]"
-          >
-            {{ mealType }}
-          </mat-chip>
-        </mat-chip-set>
+          <!-- Meal Type Tags -->
+          <div class="flex flex-wrap gap-1 mt-1">
+            @for(type of recipe.types; track type) {
+            <span
+              class="px-2 py-2 rounded-full text-xs font-medium"
+              [ngClass]="{
+                'bg-blue-100 text-blue-800': type === recipeType.MATIN,
+                'bg-green-100 text-green-800': type === recipeType.MIDI,
+                'bg-purple-100 text-purple-800': type === recipeType.SOIR,
+                'bg-orange-100 text-orange-800': type.toString() === 'GOUTER'
+              }"
+            >
+              {{ type.toString() | lowercase }}
+            </span>
+            }
+          </div>
+        </div>
       </div>
-    </mat-card>
+
+      <!-- Expanded Details -->
+      <div
+        *ngIf="showDetailsMap[recipe.id]"
+        class="mt-3 pt-3 border-t border-gray-100"
+      >
+        <div class="space-y-3">
+          <div>
+            <h5 class="text-sm font-medium text-gray-700 mb-1">Ingredients</h5>
+            <div class="flex flex-wrap gap-1">
+              @for(ingredient of recipe.ingredients; track ingredient) {
+              <span class="px-2 py-1 bg-gray-100 rounded-full text-sm">
+                {{ ingredient }}
+              </span>
+              }
+            </div>
+          </div>
+
+          <button
+            mat-flat-button
+            class="!bg-[hsl(233deg_36%_38%)] !text-white w-full !rounded-lg"
+          >
+            View Full Recipe
+          </button>
+        </div>
+      </div>
+    </div>
     }
   </div>
 
-  <!-- Floating Action Button -->
-  <div class="fixed bottom-8 right-8">
+  <!-- Floating Action Button (Fixed above footer) -->
+  <div class="fixed bottom-20 right-4">
+    <!-- Adjusted position -->
     <button
       (click)="openModal()"
-      class="bg-[hsl(233deg_36%_38%)] text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center text-2xl hover:scale-110 transition-transform duration-200"
+      class="bg-[hsl(233deg_36%_38%)] text-white w-12 h-12 rounded shadow-lg flex items-center justify-center text-2xl hover:scale-105 transition-transform active:scale-95"
     >
       ✚
     </button>
@@ -100,28 +112,90 @@
   <!-- Modal -->
   <div
     *ngIf="showModal"
-    class="fixed inset-0 bg-[hsl(218deg_50%_91%/50%)] backdrop-blur-sm flex items-center justify-center z-50"
-    @modalAnimation
+    class="fixed inset-0 bg-opacity-30 backdrop-blur-sm flex items-center justify-center p-4 z-50"
   >
-    <div
-      class="bg-[hsl(213deg_85%_97%)] rounded-3xl shadow-sm p-6 w-full max-w-md mx-4 transition-all duration-300 transform scale-95"
-      [class.scale-100]="showModal"
-    >
-      <!-- ... (keep your existing modal content, update classes as below) ... -->
+    <div class="bg-white rounded-xl w-full max-w-md shadow-lg p-4">
+      <div class="space-y-4">
+        <!-- Modal Header -->
+        <div class="flex justify-between items-center">
+          <h2 class="text-lg font-semibold">Nouvelle Recette 🔥</h2>
+          <button
+            (click)="closeModal()"
+            class="text-gray-500 hover:text-gray-700"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
 
-      <!-- Update inputs -->
-      <input
-        type="text"
-        class="w-full p-3 rounded-xl border-2 border-transparent focus:border-[hsl(233deg_36%_38%)] focus:ring-1 focus:ring-[hsl(233deg_36%_38%)] outline-none transition-all duration-200"
-      />
+        <!-- Form Content -->
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium mb-1"
+              >Titre de la recette</label
+            >
+            <input
+              type="text"
+              class="w-full p-2 rounded-lg border border-gray-200 focus:ring-1 focus:ring-[hsl(233deg_36%_38%)]"
+            />
+          </div>
 
-      <!-- Update buttons -->
-      <button
-        (click)="closeModal()"
-        class="bg-red-200 text-gray-700 py-2 px-4 rounded-xl font-medium hover:scale-105 transition-transform"
-      >
-        Annuler
-      </button>
+          <div>
+            <label class="block text-sm font-medium mb-1"
+              >Les ingredients</label
+            >
+            <div class="space-y-2">
+              <input
+                type="text"
+                placeholder="Search ingredients..."
+                class="w-full p-2 rounded-lg border border-gray-200"
+              />
+              <div class="flex flex-wrap gap-2">
+                <!-- Selected ingredients -->
+                <span
+                  class="px-2 py-1 my-1 bg-gray-100 rounded-full text-sm flex items-center gap-1"
+                >
+                  ingredient1
+                  <button class="text-gray-400 hover:text-gray-600">
+                    <mat-icon class="!text-sm !w-4 !h-4">close</mat-icon>
+                  </button>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-2">C'est Pour</label>
+            <div class="grid grid-cols-2 gap-2">
+              <label
+                *ngFor="let type of ['Matin', 'Midi', 'Soir', 'Goûter']"
+                class="flex items-center p-2 rounded-lg border border-gray-200"
+              >
+                <input
+                  type="checkbox"
+                  class="mr-2 rounded text-[hsl(233deg_36%_38%)]"
+                />
+                {{ type }}
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal Actions -->
+        <div class="flex gap-2 pt-4">
+          <button
+            (click)="closeModal()"
+            class="flex-1 py-2 px-4 rounded-lg border border-gray-200 hover:bg-gray-50"
+          >
+            Annuler
+          </button>
+          <button
+            (click)="saveRecipe()"
+            class="flex-1 py-2 px-4 rounded-lg bg-[hsl(233deg_36%_38%)] text-white hover:bg-[hsl(233deg_36%_38%/90%)]"
+          >
+            Créer
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>

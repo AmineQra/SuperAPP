@@ -12,3 +12,16 @@
 .modal-animation {
   animation: modalEnter 0.3s ease-out;
 }
+
+/* component.css */
+@media (max-width: 640px) {
+  .recipe-card {
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .modal-content {
+    margin: 0 12px;
+  }
+}

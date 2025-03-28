@@ -1,9 +1,9 @@
 import { Ingredient } from './ingredient';
 
-enum recipeType {
-  PETIT_DEJEUNER,
-  DEJEUNER,
-  DINER,
+export enum RecipeType {
+  MATIN,
+  MIDI,
+  SOIR,
   GOUTER,
 }
 
@@ -11,6 +11,6 @@ export interface Recipe {
   id: number;
   name: string;
   description: string;
-  ingredients: Set<Ingredient>;
-  types: Set<recipeType>;
+  ingredients: Ingredient[];
+  types: RecipeType[];
 }

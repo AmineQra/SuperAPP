@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Recipe } from '../../core/models/recipe';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Recipe, RecipeType } from '../../core/models/recipe';
 import { RecipesService } from '../../core/services/recipes/recipes.service';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -7,13 +7,6 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { SearchbarComponent } from '../../shared/components/searchbar/searchbar.component';
-import {
-  trigger,
-  state,
-  style,
-  transition,
-  animate,
-} from '@angular/animations';
 
 @Component({
   selector: 'app-recipes',
@@ -27,25 +20,23 @@ import {
   ],
   templateUrl: './recipes.component.html',
   styleUrl: './recipes.component.css',
-  animations: [
-    trigger('slideInOut', [
-      state('true', style({ height: '*', opacity: 1 })),
-      state('false', style({ height: '0px', opacity: 0 })),
-      transition('true <=> false', animate('300ms ease-in-out')),
-    ]),
-  ],
 })
 export class RecipesComponent implements OnInit, OnDestroy {
   public recipes: Recipe[] | undefined;
   showDetailsMap: { [key: number]: boolean } = {};
-  arrowDirection: string = '▼';
   showModal: boolean = false;
+  recipeType: typeof RecipeType;
 
-  changeArrowDirection() {
-    if (this.arrowDirection == '▲') this.arrowDirection = '▼';
-    else {
-      this.arrowDirection = '▲';
-    }
+  constructor(private recipeService: RecipesService) {
+    this.recipeType = RecipeType;
+  }
+
+  ngOnInit(): void {
+    this.getRecipes();
+  }
+
+  ngOnDestroy(): void {
+    this.recipes = [];
   }
 
   closeModal() {
@@ -62,16 +53,6 @@ export class RecipesComponent implements OnInit, OnDestroy {
 
   toggleDetails(recipeId: number) {
     this.showDetailsMap[recipeId] = !this.showDetailsMap[recipeId];
-  }
-
-  constructor(private recipeService: RecipesService) {}
-
-  ngOnInit(): void {
-    this.getRecipes();
-  }
-
-  ngOnDestroy(): void {
-    this.recipes = [];
   }
 
   public getRecipes(): void {

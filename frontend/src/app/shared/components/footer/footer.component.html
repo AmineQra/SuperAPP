@@ -2,13 +2,22 @@
 <footer
   class="app-footer bg-[hsl(213deg_85%_97%)] shadow-sm fixed bottom-0 w-full py-3"
 >
-  <nav class="flex justify-around max-w-2xl mx-auto">
+  <nav class="flex justify-around max-w-2xl mx-auto gap-x-4">
     <button
-      *ngFor="let nav of ['home', 'search', 'recipes', 'planning']"
-      class="nav-btn text-[hsl(233deg_36%_38%)] px-4 py-2 rounded-lg font-medium hover:scale-105 transition-transform duration-200 hover:bg-[hsl(233deg_36%_38%/10%)]"
-      [routerLink]="nav"
+      *ngFor="
+        let nav of [
+          { icon: 'img/home.png', label: 'Home', route: 'home' },
+          { icon: 'img/search.png', label: 'Search', route: 'search' },
+          { icon: 'img/recipe.png', label: 'Recipes', route: 'recipes' },
+          { icon: 'img/calendar.png', label: 'Planning', route: 'planning' },
+          { icon: 'img/user.png', label: 'Profile', route: 'profile' }
+        ]
+      "
+      class="flex flex-col items-center text-[hsl(233deg_36%_38%)] px-3 py-2 sm:px-4 sm:py-2 rounded-lg font-medium hover:scale-105 transition-transform duration-200 hover:bg-[hsl(233deg_36%_38%/10%)]"
+      [routerLink]="nav.route"
+      routerLinkActive="active"
     >
-      {{ nav }}
+      <img src="{{ nav.icon }}" />
     </button>
   </nav>
 </footer>
