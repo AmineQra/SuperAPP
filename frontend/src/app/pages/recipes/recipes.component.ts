@@ -7,6 +7,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { SearchbarComponent } from '../../shared/components/searchbar/searchbar.component';
+import { AddRecipeModalComponent } from '../../shared/components/add-recipe-modal/add-recipe-modal.component';
+import { expandCollapseAnimation } from '../../shared/animations/expandCollapseAnimation';
 
 @Component({
   selector: 'app-recipes',
@@ -17,9 +19,11 @@ import { SearchbarComponent } from '../../shared/components/searchbar/searchbar.
     MatButtonModule,
     MatIconModule,
     SearchbarComponent,
+    AddRecipeModalComponent,
   ],
   templateUrl: './recipes.component.html',
   styleUrl: './recipes.component.css',
+  animations: [expandCollapseAnimation],
 })
 export class RecipesComponent implements OnInit, OnDestroy {
   public recipes: Recipe[] | undefined;
@@ -43,12 +47,8 @@ export class RecipesComponent implements OnInit, OnDestroy {
     this.showModal = false;
   }
 
-  saveRecipe() {
-    console.log('recipe saved');
-  }
-
   openModal() {
-    this.showModal = !this.showModal;
+    this.showModal = true;
   }
 
   toggleDetails(recipeId: number) {

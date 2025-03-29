@@ -1,1 +1,13 @@
-<input type="text" placeholder="Search recipes..." class="search-bar" />
+<div
+  class="group bg-white shadow-sm p-1 rounded-xl space-y-2 transition-all duration-200 border-2 border-transparent focus-within:border-[hsl(233deg_36%_38%)] focus-within:ring-1 focus-within:ring-[hsl(233deg_36%_38%)]"
+>
+  <div class="flex items-center gap-2 px-2 py-1.5 rounded-md">
+    <input
+      type="text"
+      (focus)="searchFocused = true"
+      (blur)="searchFocused = false"
+      placeholder="Rechercher une recette..."
+      class="w-full outline-none placeholder:text-gray-400 placeholder:text-sm focus:placeholder-transparent"
+    />
+  </div>
+</div>
