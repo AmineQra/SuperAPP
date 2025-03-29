@@ -3,6 +3,8 @@
 
 *.vscode
 
+init.sql
+
 # Log file
 *.log
 
