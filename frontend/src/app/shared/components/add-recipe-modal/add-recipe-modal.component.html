@@ -31,22 +31,58 @@
         <div *ngSwitchCase="2">
           <h2 class="text-lg font-semibold">Les ingrédients</h2>
           <div class="space-y-2">
-            <div
-              class="transition-all duration-200 rounded-lg border-2 border-transparent focus-within:border-[hsl(233deg_36%_38%)] focus-within:ring-1 focus-within:ring-[hsl(233deg_36%_38%)]"
-            >
-              <input
-                type="text"
-                placeholder="Ajouter un ingrédient..."
-                class="w-full p-2 rounded-lg border border-gray-200 outline-none placeholder:text-gray-400 placeholder:text-sm"
-              />
+            <!-- Input Group: Quantity + Ingredient Search -->
+            <div class="flex space-x-2 items-center relative">
+              <!-- Quantity Input with "g/ml" label -->
+              <div class="relative">
+                <input
+                  type="number"
+                  placeholder="Qté"
+                  [(ngModel)]="ingredientQuantity"
+                  class="w-20 p-2 pr-10 rounded-l-lg border border-gray-200 outline-none placeholder:text-gray-400 placeholder:text-sm"
+                />
+                <span
+                  class="absolute inset-y-0 right-0 flex items-center pr-2 text-gray-500 text-xs"
+                >
+                  g/ml
+                </span>
+              </div>
+              <!-- Ingredient Search Input -->
+              <div class="relative w-full">
+                <input
+                  type="text"
+                  placeholder="Rechercher un ingrédient..."
+                  [(ngModel)]="ingredientQuery"
+                  (ngModelChange)="onIngredientQueryChange()"
+                  class="w-full p-2 rounded-r-lg border border-gray-200 outline-none placeholder:text-gray-400 placeholder:text-sm"
+                />
+                <!-- Dropdown Suggestions -->
+                <ul
+                  *ngIf="suggestions.length > 0"
+                  class="absolute z-10 bg-white border border-gray-200 w-full mt-1 rounded-lg shadow-lg"
+                >
+                  <li
+                    *ngFor="let suggestion of suggestions"
+                    (click)="addIngredient(suggestion.name)"
+                    class="p-2 hover:bg-gray-100 cursor-pointer"
+                  >
+                    {{ suggestion.name }}
+                  </li>
+                </ul>
+              </div>
             </div>
-            <!-- Example list of selected ingredients -->
+
+            <!-- List of Added Ingredients -->
             <div class="flex flex-wrap gap-2">
               <span
+                *ngFor="let ingredient of addedIngredients"
                 class="px-2 py-1 bg-gray-100 rounded-xl text-sm flex items-center gap-1"
               >
-                ingredient1
-                <button class="text-gray-400 hover:text-gray-600">
+                {{ ingredient.quantity }} g/ml - {{ ingredient.name }}
+                <button
+                  (click)="removeIngredient(ingredient)"
+                  class="text-gray-400 hover:text-gray-600"
+                >
                   <mat-icon class="!text-sm !w-4 !h-4">close</mat-icon>
                 </button>
               </span>
@@ -97,14 +133,17 @@
         <div *ngSwitchCase="5">
           <h2 class="text-lg font-semibold">Choisissez une image</h2>
           <div class="grid grid-cols-3 gap-2">
-            <ng-container *ngFor="let img of [].constructor(12); let i = index">
-              <label class="cursor-pointer">
+            <ng-container *ngFor="let img of imageList; let i = index">
+              <label
+                class="cursor-pointer border-2 rounded-lg"
+                (click)="selectImage(img)"
+                [class.border-blue-600]="selectedImage == img"
+              >
                 <img
-                  src="img/pizza.jpg"
+                  src="{{ img }}"
                   alt="recipe-img-{{ i + 1 }}"
                   class="w-full h-20 object-cover shadow rounded-lg border border-gray-200 hover:shadow-lg transition-shadow duration-200"
                 />
-                <!-- Optionally, add a radio button or visual indicator here -->
               </label>
             </ng-container>
           </div>
