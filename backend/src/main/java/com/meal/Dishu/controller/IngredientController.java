@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.meal.Dishu.dto.IngredientRequestDto;
 import com.meal.Dishu.model.Ingredient;
 import com.meal.Dishu.model.IngredientDocument;
+import com.meal.Dishu.model.Recipe;
+import com.meal.Dishu.model.RecipeDocument;
 import com.meal.Dishu.service.IngredientSearchService;
 import com.meal.Dishu.service.IngredientService;
 
@@ -33,10 +36,11 @@ public class IngredientController {
     private final IngredientSearchService ingredientSearchService;
 
     @GetMapping
-    public ResponseEntity<List<Ingredient>> getAllIngredients(@RequestParam(required = false) String search) throws IOException{
+    public ResponseEntity<List<Ingredient>> getAllIngredients(@RequestParam(required = false) String search)
+            throws IOException {
         List<IngredientDocument> ingredientsDocument;
         List<Ingredient> ingredients;
-    
+
         if (search != null && !search.isEmpty()) {
             ingredientsDocument = ingredientSearchService.searchIngredients(search);
             ingredients = ingredientService.findAllById(ingredientsDocument);
@@ -44,6 +48,21 @@ public class IngredientController {
             ingredients = ingredientService.getAllIngredients();
         }
         return ResponseEntity.ok(ingredients);
+    }
+
+    @PostMapping("/search")
+    public ResponseEntity<List<Ingredient>> searchIngredient(@RequestBody String query) {
+        try {
+            List<IngredientDocument> searchResult = ingredientSearchService.searchIngredients(query);
+            List<Ingredient> ingredients = ingredientService.findAllById(searchResult);
+            return ResponseEntity.ok(ingredients);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.SC_INTERNAL_SERVER_ERROR).build();
+        } catch (Exception e) {
+            e.printStackTrace(); // Log the exception details for debugging
+            return ResponseEntity.status(HttpStatus.SC_INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @GetMapping("/{id}")

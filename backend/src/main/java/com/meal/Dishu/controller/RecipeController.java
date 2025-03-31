@@ -24,18 +24,16 @@ import com.meal.Dishu.service.RecipeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-
-@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 @RestController
 @RequestMapping("/recipes")
 @RequiredArgsConstructor
 public class RecipeController {
-    
+
     private final RecipeService recipeService;
     private final RecipeSearchService recipeSearchService;
 
     @GetMapping
-     public ResponseEntity<List<Recipe>> getAllRecipes() {
+    public ResponseEntity<List<Recipe>> getAllRecipes() {
         List<Recipe> recipes = recipeService.getAllRecipes();
         return ResponseEntity.ok(recipes);
     }
@@ -47,13 +45,13 @@ public class RecipeController {
     }
 
     @PostMapping("/add")
-     public ResponseEntity<Recipe> createRecipe(@Valid @RequestBody RecipeRequestDto recipeRequestDto) {
+    public ResponseEntity<Recipe> createRecipe(@Valid @RequestBody RecipeRequestDto recipeRequestDto) {
         Recipe newRecipe = recipeService.createRecipe(recipeRequestDto);
         return ResponseEntity.ok(newRecipe);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteRecipe(@PathVariable("id") Long id){
+    public ResponseEntity<?> deleteRecipe(@PathVariable("id") Long id) {
         recipeService.deleteRecipe(id);
         return ResponseEntity.noContent().build();
     }
@@ -64,17 +62,13 @@ public class RecipeController {
             List<RecipeDocument> searchResult = recipeSearchService.searchRecipes(query);
             List<Recipe> recipes = recipeService.findAllById(searchResult);
             return ResponseEntity.ok(recipes);
-        }
-        catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.SC_INTERNAL_SERVER_ERROR).build();
-        }
-        catch(Exception e) {
-            e.printStackTrace();  // Log the exception details for debugging
+        } catch (Exception e) {
+            e.printStackTrace(); // Log the exception details for debugging
             return ResponseEntity.status(HttpStatus.SC_INTERNAL_SERVER_ERROR).build();
         }
-        
     }
-    
-    
+
 }
