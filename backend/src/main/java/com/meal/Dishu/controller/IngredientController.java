@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.meal.Dishu.dto.IngredientRequestDto;
 import com.meal.Dishu.model.Ingredient;
 import com.meal.Dishu.model.IngredientDocument;
-import com.meal.Dishu.model.Recipe;
-import com.meal.Dishu.model.RecipeDocument;
 import com.meal.Dishu.service.IngredientSearchService;
 import com.meal.Dishu.service.IngredientService;
 
