@@ -8,11 +8,11 @@ import {
 } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { LoginService } from '../../../core/services/auth/login.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, MatIconModule, ReactiveFormsModule],
+  imports: [CommonModule, MatIconModule, ReactiveFormsModule, RouterLink],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
@@ -21,6 +21,7 @@ export class LoginComponent {
   emailFocused: boolean = false;
   passwordFocused: boolean = false;
   errorMessage: string | null = '';
+  registerLink: string = 'register';
 
   constructor(private loginService: LoginService, private router: Router) {}
 

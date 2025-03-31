@@ -5,6 +5,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { SearchComponent } from './pages/search/search.component';
 import { PlanningComponent } from './pages/planning/planning.component';
 import { LoginComponent } from './pages/auth/login/login.component';
+import { RegisterComponent } from './pages/auth/register/register.component';
 
 export const routes: Routes = [
   {
@@ -13,6 +14,13 @@ export const routes: Routes = [
     data: { pageTitle: 'Login' },
     title: 'Login Page - Dishu',
   },
+  {
+    path: 'register',
+    component: RegisterComponent,
+    data: { pageTitle: 'Login' },
+    title: 'Register Page - Dishu',
+  },
+
   {
     path: 'home',
     component: HomeComponent,
