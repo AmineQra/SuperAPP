@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, Optional } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { environment } from '../../../../environments/environment.development';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -11,11 +12,20 @@ export class LoginService {
   private apiServerUrl: string = environment.apiServerUrl;
   private tokenSubject: BehaviorSubject<string | null>;
   public authToken: Observable<string | null>;
+  private isBrowser: boolean;
 
-  constructor(private http: HttpClient, private router: Router) {
-    this.tokenSubject = new BehaviorSubject<string | null>(
-      localStorage.getItem('access_token')
-    );
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+
+    // Initialize with safe value
+    const initialToken = this.isBrowser
+      ? localStorage.getItem('access_token')
+      : null;
+    this.tokenSubject = new BehaviorSubject<string | null>(initialToken);
     this.authToken = this.tokenSubject.asObservable();
   }
 
@@ -25,10 +35,7 @@ export class LoginService {
 
   public authenticate(email: string, password: string): Observable<any> {
     return this.http
-      .post<any>(`${this.apiServerUrl}/api/auth/login`, {
-        email,
-        password,
-      })
+      .post<any>(`${this.apiServerUrl}/api/auth/login`, { email, password })
       .pipe(
         tap((response) => {
           if (response.token) {
@@ -39,12 +46,16 @@ export class LoginService {
   }
 
   public storeToken(token: string): void {
-    localStorage.setItem('access_token', token);
+    if (this.isBrowser) {
+      localStorage.setItem('access_token', token);
+    }
     this.tokenSubject.next(token);
   }
 
   public logout(): void {
-    localStorage.removeItem('access_token');
+    if (this.isBrowser) {
+      localStorage.removeItem('access_token');
+    }
     this.tokenSubject.next(null);
     this.router.navigate(['']);
   }
@@ -57,8 +68,15 @@ export class LoginService {
     const token = this.tokenValue;
     if (!token) return true;
 
-    const expiry = JSON.parse(atob(token.split('.')[1])).exp;
-    return Math.floor(new Date().getTime() / 1000) >= expiry;
+    try {
+      if (this.isBrowser) {
+        const expiry = JSON.parse(atob(token.split('.')[1])).exp;
+        return Math.floor(Date.now() / 1000) >= expiry;
+      }
+      return true; // Treat as expired if not in browser
+    } catch (e) {
+      return true;
+    }
   }
 
   public getToken(): string | null {

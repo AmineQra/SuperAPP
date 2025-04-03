@@ -1,11 +1,12 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { ActivatedRoute, Data, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, map, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-footer',
-  imports: [RouterModule],
+  imports: [RouterModule, CommonModule],
   standalone: true,
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.css',

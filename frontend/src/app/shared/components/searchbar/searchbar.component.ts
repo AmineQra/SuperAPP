@@ -4,8 +4,8 @@ import { Component } from '@angular/core';
   selector: 'app-searchbar',
   imports: [],
   templateUrl: './searchbar.component.html',
-  styleUrl: './searchbar.component.css'
+  styleUrl: './searchbar.component.css',
 })
 export class SearchbarComponent {
-
+  public searchFocused: boolean = false;
 }

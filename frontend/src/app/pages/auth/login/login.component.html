@@ -4,10 +4,10 @@
   <form
     [formGroup]="loginForm"
     (ngSubmit)="onLogin()"
-    class="bg-[hsl(213deg_85%_97%)] p-8 rounded-3xl shadow-sm flex flex-col gap-8 max-w-xs w-full transition-all duration-300"
+    class="p-8 rounded-3xl flex flex-col gap-8 max-w-xs w-full transition-all duration-300"
   >
     <!-- Logo -->
-    <div class="relative -mt-12 mx-auto animate-[spin_1s_ease-in]">
+    <div class="relative -mt-12 mx-auto">
       <img
         class="w-28 h-28 my-16 rounded-3xl shadow-sm transform transition hover:scale-110"
         src="img/logo.png"
@@ -90,14 +90,14 @@
     <!-- Footer Links -->
     <div class="flex justify-between text-gray-500 text-sm pb-16">
       <a
-        routerLink="/signup"
+        routerLink="/register"
         class="hover:underline hover:text-[hsl(233deg_36%_38%)] transition-colors"
-        >Sign up</a
+        >Inscription</a
       >
       <a
         routerLink="/forgot-password"
         class="hover:underline hover:text-[hsl(233deg_36%_38%)] transition-colors"
-        >Forgot Password?</a
+        >Mot de passe oublié ?</a
       >
     </div>
   </form>

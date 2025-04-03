@@ -1,151 +1,132 @@
-<div>
-  <app-searchbar
-    class="flex justify-center items-center border-1 rounded m-4"
-  ></app-searchbar>
-</div>
-@for(recipe of recipes; track recipe) {
-<mat-card class="recipe-card mt-5">
-  <div class="card-header">
-    <mat-card-title>
-      <h4 (click)="toggleDetails(1)" class="clickable-title">
-        {{ recipe.name }} {{ arrowDirection }}
-      </h4>
-    </mat-card-title>
-    <div class="actions">
-      <button mat-icon-button color="primary">
-        <mat-icon>visibility</mat-icon>
-      </button>
-      <button mat-icon-button color="accent">
-        <mat-icon>edit</mat-icon>
-      </button>
-      <button (click)="deleteRecipe(1)" mat-icon-button color="warn">
-        <mat-icon>delete</mat-icon>
-      </button>
-    </div>
+<div class="min-h-screen bg-[hsl(218deg_50%_91%)] p-4 pb-24">
+  <!-- Added pb-24 for footer space -->
+  <!-- Search Bar -->
+  <div class="mb-4 sticky top-0 bg-[hsl(218deg_50%_91%)] z-10 pt-2">
+    <app-searchbar></app-searchbar>
   </div>
 
-  <div class="card-content" *ngIf="showDetailsMap[1]">
-    <img mat-card-image src="img/pizza.jpg" alt="Image de la recette" />
-    <div class="text-content">
-      <h6 class="section-title">Ingrédients</h6>
-      <mat-chip-set>
-        <mat-chip class=""> cheese </mat-chip>
-        <mat-chip class=""> pâte à pizza </mat-chip>
-        <mat-chip class=""> persil </mat-chip>
-        <mat-chip class=""> ... </mat-chip>
-      </mat-chip-set>
-    </div>
-  </div>
-  <mat-chip-set class="chip-container">
-    <mat-chip class="!bg-blue-300"> déjeuner </mat-chip>
-    <mat-chip class="!bg-green-300"> dîner </mat-chip>
-  </mat-chip-set>
-</mat-card>
-}
-
-<!-- Button to open the modal -->
-<div
-  class="absolute inset-x-0 bottom-16 h-16 flex justify-content-center align-content-center align-items-center"
->
-  <button
-    (click)="openModal()"
-    type="button"
-    class="bg-green-300 w-10 h-10 rounded-circle shadow-sm"
-  >
-    ✚
-  </button>
-</div>
-
-<!-- Modal for recipe information -->
-<div
-  *ngIf="showModal"
-  class="container-fluid fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50"
->
-  <div class="bg-white p-6 rounded-lg w-92">
-    <h2 class="text-xl font-semibold mb-4 flex justify-center">
-      Nouvelle recette 🔥
-    </h2>
-    <div>
-      <label for="recipe-name" class="block text-sm font-medium"
-        >Nom de la recette</label
-      >
-      <input
-        id="recipe-name"
-        type="text"
-        class="w-full p-2 mt-1 border rounded"
-      />
-    </div>
-
-    <div class="mt-4">
-      <label for="ingredients" class="block text-sm font-medium"
-        >Ingrédients</label
-      >
-      <div class="w-full p-2 mt-1 border rounded">
-        <input
-          type="text"
-          placeholder="Rechercher un ingrédient"
-          class="w-full p-2 border rounded"
+  <!-- Recipe List -->
+  <div class="space-y-3">
+    @for(recipe of recipes; track recipe) {
+    <div
+      class="bg-white rounded-xl shadow-sm p-3 transition-all duration-200"
+      [class.ring-1]="showDetailsMap[recipe.id]"
+      [class.ring-[hsl(233deg_36%_38%)]="showDetailsMap[recipe.id]"
+    >
+      <!-- Compact View -->
+      <div class="flex items-center gap-3">
+        <!-- Thumbnail -->
+        <img
+          src="img/pizza.jpg"
+          alt="Recipe thumbnail"
+          class="w-16 h-16 rounded-lg object-cover"
         />
-        <div class="mt-2 space-y-2">
-          <div>
-            <button
-              class="w-full text-left p-2 bg-gray-100 rounded-md hover:bg-gray-200"
+
+        <!-- Title and Actions -->
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center">
+              <!-- Recipe Name (clickable) -->
+              <h4
+                (click)="toggleDetails(recipe.id)"
+                class="text-[hsl(233deg_36%_38%)] font-medium truncate cursor-pointer"
+              >
+                {{ recipe.name }}
+              </h4>
+              <!-- Arrow Icon (changes based on details state) -->
+              <mat-icon
+                class="!text-lg cursor-pointer mb-3"
+                (click)="toggleDetails(recipe.id)"
+              >
+                {{
+                  showDetailsMap[recipe.id]
+                    ? "keyboard_arrow_up"
+                    : "keyboard_arrow_down"
+                }}
+              </mat-icon>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex gap-1">
+              <button
+                mat-icon-button
+                class="!text-gray-500 hover:!bg-[hsl(233deg_36%_38%/10%)] !w-8 !h-8"
+              >
+                <mat-icon class="!text-lg">edit</mat-icon>
+              </button>
+              <button
+                (click)="deleteRecipe(recipe.id)"
+                mat-icon-button
+                class="!text-red-400 hover:!bg-red-100 !w-8 !h-8"
+              >
+                <mat-icon class="!text-lg">delete</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <!-- Meal Type Tags -->
+          <div class="flex flex-wrap gap-1 mt-1">
+            @for(type of recipe.types; track type) {
+            <span
+              class="px-2 py-2 rounded-full text-xs font-medium"
+              [ngClass]="{
+                'bg-blue-100 text-blue-800': type === recipeType.MATIN,
+                'bg-green-100 text-green-800': type === recipeType.MIDI,
+                'bg-purple-100 text-purple-800': type === recipeType.SOIR,
+                'bg-orange-100 text-orange-800': type.toString() === 'GOUTER'
+              }"
             >
-              ingredient1
-            </button>
+              {{ type.toString() | lowercase }}
+            </span>
+            }
           </div>
         </div>
       </div>
-      <div class="mt-4">
-        <h6>Ingrédients sélectionnés</h6>
-        <div class="mt-2">
-          <mat-chip>ingredient 1</mat-chip>
+
+      <!-- Expanded Details -->
+      <div
+        *ngIf="showDetailsMap[recipe.id]"
+        [@expandCollapse]
+        class="mt-3 pt-3 border-t border-gray-100"
+      >
+        <div class="content space-y-3">
+          <div>
+            <h5 class="text-sm font-medium text-gray-700 mb-1">Ingredients</h5>
+            <div class="flex flex-wrap gap-1">
+              @for(ingredient of recipe.ingredients; track ingredient) {
+              <span class="px-2 py-1 bg-gray-100 rounded-full text-sm">
+                {{ ingredient }}
+              </span>
+              }
+            </div>
+          </div>
+
+          <button
+            mat-flat-button
+            class="!bg-[hsl(233deg_36%_38%)] !text-white w-full !rounded-lg"
+          >
+            View Full Recipe
+          </button>
         </div>
       </div>
     </div>
-
-    <!-- Checkboxes for meals -->
-    <div class="mt-4">
-      <h6 class="text-sm font-medium">Type de repas</h6>
-      <div class="flex space-x-4">
-        <label class="flex items-center">
-          <input type="checkbox" class="mr-2" />
-          Petit Déjeuner
-        </label>
-        <label class="flex items-center">
-          <input type="checkbox" class="mr-2" />
-          Déjeuner
-        </label>
-        <label class="flex items-center">
-          <input type="checkbox" class="mr-2" />
-          Dîner
-        </label>
-        <label class="flex items-center">
-          <input type="checkbox" class="mr-2" />
-          Goûter
-        </label>
-      </div>
-    </div>
-
-    <div class="mt-4 flex justify-content-between gap-1">
-      <button
-        (click)="closeModal()"
-        class="bg-red-200 text-gray-700 py-2 px-4 rounded-md"
-      >
-        Annuler
-      </button>
-      <button
-        (click)="closeModal()"
-        class="bg-blue-300 text-gray-700 py-2 px-4 rounded-md"
-      >
-        Recette aléatoire
-      </button>
-      <button
-        (click)="saveRecipe()"
-        class="bg-green-500 text-white py-2 px-2 rounded-md"
-      >
-        Sauvegarder
-      </button>
-    </div>
+    }
   </div>
+
+  <!-- Floating Action Button (Fixed above footer) -->
+  <div class="fixed bottom-20 right-4">
+    <!-- Adjusted position -->
+    <button
+      (click)="openModal()"
+      class="bg-[hsl(233deg_36%_38%)] text-white w-12 h-12 rounded shadow-lg flex items-center justify-center text-2xl hover:scale-105 transition-transform active:scale-95"
+    >
+      ✚
+    </button>
+  </div>
+
+  <!-- Modal -->
+  <app-add-recipe-modal
+    [showModal]="showModal"
+    (closeModalEvent)="closeModal()"
+  ></app-add-recipe-modal>
 </div>

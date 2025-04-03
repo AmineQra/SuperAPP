@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Recipe } from '../../core/models/recipe';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Recipe, RecipeType } from '../../core/models/recipe';
 import { RecipesService } from '../../core/services/recipes/recipes.service';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -7,6 +7,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { SearchbarComponent } from '../../shared/components/searchbar/searchbar.component';
+import { AddRecipeModalComponent } from '../../shared/components/add-recipe-modal/add-recipe-modal.component';
+import { expandCollapseAnimation } from '../../shared/animations/expandCollapseAnimation';
 
 @Component({
   selector: 'app-recipes',
@@ -17,57 +19,46 @@ import { SearchbarComponent } from '../../shared/components/searchbar/searchbar.
     MatButtonModule,
     MatIconModule,
     SearchbarComponent,
+    AddRecipeModalComponent,
   ],
   templateUrl: './recipes.component.html',
   styleUrl: './recipes.component.css',
+  animations: [expandCollapseAnimation],
 })
 export class RecipesComponent implements OnInit, OnDestroy {
   public recipes: Recipe[] | undefined;
   showDetailsMap: { [key: number]: boolean } = {};
-  arrowDirection: string = '▼';
   showModal: boolean = false;
+  recipeType: typeof RecipeType;
 
-  changeArrowDirection() {
-    if (this.arrowDirection == '▲') this.arrowDirection = '▼';
-    else {
-      this.arrowDirection = '▲';
-    }
+  constructor(private recipeService: RecipesService) {
+    this.recipeType = RecipeType;
+  }
+
+  ngOnInit(): void {
+    this.getRecipes();
+  }
+
+  ngOnDestroy(): void {
+    this.recipes = [];
   }
 
   closeModal() {
     this.showModal = false;
   }
 
-  saveRecipe() {
-    console.log('recipe saved');
-  }
-
   openModal() {
-    this.showModal = !this.showModal;
+    this.showModal = true;
   }
 
   toggleDetails(recipeId: number) {
     this.showDetailsMap[recipeId] = !this.showDetailsMap[recipeId];
   }
 
-  constructor(private recipeService: RecipesService) {}
-
-  ngOnInit(): void {
-    this.getRecipes();
-  }
-  
-  ngOnDestroy(): void {
-    this.recipes = [];
-  }
-
-
   public getRecipes(): void {
     this.recipeService.getRecipes().subscribe((response: Recipe[]) => {
-      console.table(response);
       this.recipes = [];
-      console.log(this.recipes);
       this.recipes = response;
-      console.table(this.recipes);
     });
   }
 
