@@ -128,5 +128,6 @@
   <app-add-recipe-modal
     [showModal]="showModal"
     (closeModalEvent)="closeModal()"
+    (recipeCreated)="onRecipeCreated($event)"
   ></app-add-recipe-modal>
 </div>

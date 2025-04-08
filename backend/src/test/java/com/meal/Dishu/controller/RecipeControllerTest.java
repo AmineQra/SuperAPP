@@ -26,71 +26,70 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-
 public class RecipeControllerTest {
 
-    private MockMvc mockMvc;
-    
-    private ObjectMapper objectMapper = new ObjectMapper();
+        private MockMvc mockMvc;
 
-    @Mock
-    private RecipeService recipeService;
+        private ObjectMapper objectMapper = new ObjectMapper();
 
-    @InjectMocks 
-    private RecipeController recipeController;
+        @Mock
+        private RecipeService recipeService;
 
-    @BeforeEach
-    void setUp(){
-        MockitoAnnotations.openMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(recipeController).build();
-    }
+        @InjectMocks
+        private RecipeController recipeController;
 
-    @Test
-    void shouldReturnAllRecipesSuccessfully() throws Exception {
-        List<Recipe> recipes = List.of(
-            new Recipe(1L, "Pizza", "Delicious cheese pizza", null, null),
-            new Recipe(2L, "Burger", "Delicious cheese Burger", null, null)
-        );
-        when(recipeService.getAllRecipes()).thenReturn(recipes);
+        @BeforeEach
+        void setUp() {
+                MockitoAnnotations.openMocks(this);
+                mockMvc = MockMvcBuilders.standaloneSetup(recipeController).build();
+        }
 
-        mockMvc.perform(get("/recipes"))
-            .andExpect(jsonPath("$.size()")
-            .value(2))
-            .andExpect(jsonPath("$[0].name").value("Pizza"));
-        
-    }
+        @Test
+        void shouldReturnAllRecipesSuccessfully() throws Exception {
+                List<Recipe> recipes = List.of(
+                                new Recipe(1L, "Pizza", "Delicious cheese pizza", null, null, null),
+                                new Recipe(2L, "Burger", "Delicious cheese Burger", null, null, null));
+                when(recipeService.getAllRecipes()).thenReturn(recipes);
 
-    @Test
-    void shouldReturnRecipeByIdSuccessfully() throws Exception {
-        Recipe recipe = new Recipe(1L, "Pizza", "Cheese pizza", null, null);
-        when(recipeService.getRecipeById(1L)).thenReturn(Optional.of(recipe));
+                mockMvc.perform(get("/recipes"))
+                                .andExpect(jsonPath("$.size()")
+                                                .value(2))
+                                .andExpect(jsonPath("$[0].name").value("Pizza"));
 
-        mockMvc.perform(get("/recipes/1"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Pizza"));
-    }
+        }
 
-    @Test
-    void shouldCreateRecipeSuccessfully() throws Exception {
-        RecipeType recipeType = RecipeType.DEJEUNER;
-        RecipeRequestDto recipeRequestDto = new RecipeRequestDto("Pizza", "Delicious cheese pizza", Set.of(1L), Set.of(recipeType));
-        Recipe recipe = new Recipe(null, "Pizza", "Delicious cheese pizza", null, null);
-        when(recipeService.createRecipe(any(RecipeRequestDto.class))).thenReturn(recipe);
-        
-        mockMvc.perform(post("/recipes/add")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(recipeRequestDto)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Pizza"));
-    }
+        @Test
+        void shouldReturnRecipeByIdSuccessfully() throws Exception {
+                Recipe recipe = new Recipe(1L, "Pizza", "Cheese pizza", null, null, null);
+                when(recipeService.getRecipeById(1L)).thenReturn(Optional.of(recipe));
 
-    @Test
-    void shouldDeleteRecipe() throws Exception {
-        doNothing().when(recipeService).deleteRecipe(1L);
+                mockMvc.perform(get("/recipes/1"))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$.name").value("Pizza"));
+        }
 
-        mockMvc.perform(delete("/recipes/delete/1"))
-                .andExpect(status().isNoContent());
-    }
+        @Test
+        void shouldCreateRecipeSuccessfully() throws Exception {
+                RecipeType recipeType = RecipeType.MATIN;
+                RecipeRequestDto recipeRequestDto = new RecipeRequestDto(null, "Pizza", "Delicious cheese pizza",
+                                Set.of(1L),
+                                Set.of(recipeType), null);
+                Recipe recipe = new Recipe(null, "Pizza", "Delicious cheese pizza", null, null, null);
+                when(recipeService.createRecipe(any(RecipeRequestDto.class))).thenReturn(recipe);
 
+                mockMvc.perform(post("/recipes/add")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(recipeRequestDto)))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$.name").value("Pizza"));
+        }
+
+        @Test
+        void shouldDeleteRecipe() throws Exception {
+                doNothing().when(recipeService).deleteRecipe(1L);
+
+                mockMvc.perform(delete("/recipes/delete/1"))
+                                .andExpect(status().isNoContent());
+        }
 
 }

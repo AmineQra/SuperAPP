@@ -1,8 +1,15 @@
 package com.meal.Dishu.enumeration;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 public enum RecipeType {
-    PETIT_DEJEUNER,
-    DEJEUNER,
-    DINER,
-    GOUTER
+    MATIN,
+    MIDI,
+    SOIR,
+    GOUTER;
+
+    @JsonCreator
+    public static RecipeType fromValue(String value) {
+        return RecipeType.valueOf(value.toUpperCase());
+    }
 }

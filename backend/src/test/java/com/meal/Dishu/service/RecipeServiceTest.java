@@ -44,10 +44,9 @@ class RecipeServiceTest {
     void shouldCreateRecipeSuccessfully() {
         Ingredient ingredient = new Ingredient(1L, "pomme", 2.2, 2.2, 2.2, 2.2);
         Set<Ingredient> ingredients = Set.of(ingredient);
-        Recipe recipe = new Recipe(1L, "Pizza", "Delicious cheese pizza", ingredients, null);
+        Recipe recipe = new Recipe(1L, "Pizza", "Delicious cheese pizza", ingredients, null, null);
         when(recipeRepository.save(any(Recipe.class))).thenReturn(recipe);
         when(ingredientRepository.save(any(Ingredient.class))).thenReturn(ingredient);
-
 
         assertNotNull(recipe);
         assertEquals("Pizza", recipe.getName());
@@ -56,9 +55,8 @@ class RecipeServiceTest {
     @Test
     void shouldReturnAllRecipes() {
         List<Recipe> recipes = Arrays.asList(
-                new Recipe(1L, "Pizza", "Delicious cheese pizza", null, null),
-                new Recipe(2L, "Pasta", "Tasty pasta with tomato sauce", null, null)
-        );
+                new Recipe(1L, "Pizza", "Delicious cheese pizza", null, null, null),
+                new Recipe(2L, "Pasta", "Tasty pasta with tomato sauce", null, null, null));
         when(recipeRepository.findAll()).thenReturn(recipes);
 
         List<Recipe> result = recipeService.getAllRecipes();
@@ -69,7 +67,7 @@ class RecipeServiceTest {
 
     @Test
     void shouldReturnRecipeById() {
-        Recipe recipe = new Recipe(1L, "Pizza", "Delicious cheese pizza", null, null);
+        Recipe recipe = new Recipe(1L, "Pizza", "Delicious cheese pizza", null, null, null);
         when(recipeRepository.findById(1L)).thenReturn(Optional.of(recipe));
 
         Optional<Recipe> foundRecipe = recipeService.getRecipeById(1L);
@@ -83,9 +81,9 @@ class RecipeServiceTest {
         Long recipeId = 1L;
         doNothing().when(recipeRepository).deleteById(recipeId);
         doNothing().when(recipeSearchRepository).deleteById(recipeId.toString());
-        
+
         recipeService.deleteRecipe(recipeId);
-        
+
         verify(recipeRepository, times(1)).deleteById(recipeId);
         verify(recipeSearchRepository, times(1)).deleteById(recipeId.toString());
     }

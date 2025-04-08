@@ -38,18 +38,15 @@ public class Recipe {
     private String description;
 
     @ManyToMany
-     @JoinTable(
-        name = "recipe_ingredient",
-        joinColumns = @JoinColumn(name = "recipe_id"),
-        inverseJoinColumns = @JoinColumn(name = "ingredient_id")
-    )
+    @JoinTable(name = "recipe_ingredient", joinColumns = @JoinColumn(name = "recipe_id"), inverseJoinColumns = @JoinColumn(name = "ingredient_id"))
     private Set<Ingredient> ingredients;
-
 
     @ElementCollection(targetClass = RecipeType.class)
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "recipe_enum_types", joinColumns = @JoinColumn(name = "recipe_id"))
     @Column(name = "recipe_type")
     private Set<RecipeType> types;
-    
+
+    private String img;
+
 }

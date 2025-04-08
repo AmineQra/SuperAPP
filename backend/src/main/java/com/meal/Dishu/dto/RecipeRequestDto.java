@@ -16,6 +16,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class RecipeRequestDto {
 
+    private Long id;
+
     @NotBlank(message = "name is required")
     @Size(min = 3, max = 30, message = "name between 3 and 30 character")
     private String name;
@@ -27,4 +29,6 @@ public class RecipeRequestDto {
 
     @NotEmpty(message = "minimum 1 type")
     private Set<RecipeType> types;
+
+    private String img;
 }

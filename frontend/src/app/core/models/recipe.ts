@@ -8,9 +8,10 @@ export enum RecipeType {
 }
 
 export interface Recipe {
-  id: number;
+  id: number | null;
   name: string;
   description: string;
-  ingredients: Ingredient[];
+  ingredients: number[];
   types: RecipeType[];
+  img: string;
 }

@@ -21,34 +21,35 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class RecipeService {
-    
+
     private final RecipeRepository recipeRepository;
     private final IngredientRepository ingredientRepository;
     private final RecipeSearchService recipeSearchService;
 
-    public Set<Ingredient> retrievIngredients(RecipeRequestDto recipeRequestDto){
+    public Set<Ingredient> retrievIngredients(RecipeRequestDto recipeRequestDto) {
         return ingredientRepository.findAllById(recipeRequestDto.getIngredients())
-        .stream()
-        .collect(Collectors.toSet());
+                .stream()
+                .collect(Collectors.toSet());
     }
 
-    public List<Recipe> findAllById(List<RecipeDocument> recipeDocuments){
+    public List<Recipe> findAllById(List<RecipeDocument> recipeDocuments) {
         List<Long> recipesIdList = recipeDocuments.stream().map(recipe -> Long.parseLong(recipe.getId())).toList();
         return recipeRepository.findAllById(recipesIdList);
     }
 
-    public Recipe createRecipe(RecipeRequestDto recipeRequestDto){
+    public Recipe createRecipe(RecipeRequestDto recipeRequestDto) {
         Set<Ingredient> ingredients = this.retrievIngredients(recipeRequestDto);
 
-        if(ingredients.isEmpty()){
+        if (ingredients.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ingredients request not found");
         }
         Recipe recipe = Recipe.builder()
-        .name(recipeRequestDto.getName())
-        .description(recipeRequestDto.getDescription())
-        .ingredients(ingredients)
-        .types(recipeRequestDto.getTypes())
-        .build();
+                .name(recipeRequestDto.getName())
+                .description(recipeRequestDto.getDescription())
+                .ingredients(ingredients)
+                .types(recipeRequestDto.getTypes())
+                .img(recipeRequestDto.getImg())
+                .build();
 
         Recipe savedRecipe = recipeRepository.save(recipe);
 
@@ -57,15 +58,15 @@ public class RecipeService {
         return savedRecipe;
     }
 
-    public Optional<Recipe> getRecipeById(Long id){
+    public Optional<Recipe> getRecipeById(Long id) {
         return recipeRepository.findById(id);
     }
-    
-    public List<Recipe> getAllRecipes(){
+
+    public List<Recipe> getAllRecipes() {
         return recipeRepository.findAll();
     }
 
-    public void deleteRecipe(Long id){
+    public void deleteRecipe(Long id) {
         recipeSearchService.deleteById(id.toString());
         recipeRepository.deleteById(id);
     }

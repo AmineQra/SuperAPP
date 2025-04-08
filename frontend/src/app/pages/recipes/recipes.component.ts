@@ -1,4 +1,10 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  inject,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { Recipe, RecipeType } from '../../core/models/recipe';
 import { RecipesService } from '../../core/services/recipes/recipes.service';
 import { CommonModule } from '@angular/common';
@@ -31,8 +37,16 @@ export class RecipesComponent implements OnInit, OnDestroy {
   showModal: boolean = false;
   recipeType: typeof RecipeType;
 
-  constructor(private recipeService: RecipesService) {
+  constructor(
+    private recipeService: RecipesService,
+    private cdr: ChangeDetectorRef
+  ) {
     this.recipeType = RecipeType;
+  }
+
+  onRecipeCreated(newRecipe: Recipe) {
+    this.recipes?.push(newRecipe);
+    this.cdr.detectChanges();
   }
 
   ngOnInit(): void {

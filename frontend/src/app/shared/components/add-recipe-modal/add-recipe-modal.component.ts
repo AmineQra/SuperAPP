@@ -6,6 +6,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { IngredientService } from '../../../core/services/ingredients/ingredient.service';
 import { FormsModule } from '@angular/forms';
 import { Ingredient } from '../../../core/models/ingredient';
+import { RecipesService } from '../../../core/services/recipes/recipes.service';
+import { Recipe, RecipeType } from '../../../core/models/recipe';
 
 @Component({
   selector: 'app-add-recipe-modal',
@@ -39,18 +41,33 @@ export class AddRecipeModalComponent {
     'img/taco.jpg',
     'img/pizza.jpg',
   ];
+  successMessage: string = '';
+  recipetitle: string = '';
+  recipeDescription: string = '';
   selectedImage: string = '';
   ingredientQuery: string = '';
   ingredientQuantity: number = 1;
   suggestions: Ingredient[] = [];
   selectedIngredient: Ingredient | undefined;
-  addedIngredients: { name: string; quantity: number }[] = [];
+  addedIngredients: { id: number; name: string; quantity: number }[] = [];
   units: string[] = ['g', 'ml'];
   selectedUnit: string = this.units[0];
+  recipeMealTypes: RecipeType[] = [
+    RecipeType.MATIN,
+    RecipeType.GOUTER,
+    RecipeType.MIDI,
+    RecipeType.SOIR,
+  ];
+  selectedMealTypes: RecipeType[] = [];
+
+  @Output() recipeCreated = new EventEmitter<Recipe>();
 
   currentStep: number = 1;
 
-  constructor(private ingredientService: IngredientService) {}
+  constructor(
+    private ingredientService: IngredientService,
+    private recipesService: RecipesService
+  ) {}
 
   onIngredientQueryChange(): void {
     if (this.ingredientQuery.length >= 3) {
@@ -65,9 +82,13 @@ export class AddRecipeModalComponent {
     }
   }
 
-  addIngredient(ingredientName: string): void {
+  addIngredient(ingredient: Ingredient): void {
     const quantity = this.ingredientQuantity || 1;
-    this.addedIngredients.push({ name: ingredientName, quantity });
+    this.addedIngredients.push({
+      id: ingredient.id,
+      name: ingredient.name,
+      quantity,
+    });
     this.ingredientQuantity = 1;
     this.ingredientQuery = '';
     this.suggestions = [];
@@ -81,7 +102,6 @@ export class AddRecipeModalComponent {
 
   selectImage(imageUrl: string): void {
     this.selectedImage = imageUrl;
-    // Vous pouvez ensuite renvoyer l'url via un Output ou l'utiliser dans votre logique
     console.log('Image sélectionnée:', imageUrl);
   }
 
@@ -97,10 +117,53 @@ export class AddRecipeModalComponent {
     }
   }
 
+  clearRecipeData() {
+    this.recipetitle = '';
+    this.recipeDescription = '';
+    this.selectedImage = '';
+  }
+
   saveRecipe() {
-    console.log('TODO save recipe');
+    const ingredientsId = this.addedIngredients.map((ingredient) => {
+      return ingredient.id;
+    });
+    const recipeObject = {
+      id: null,
+      name: this.recipetitle,
+      description: this.recipeDescription,
+      ingredients: ingredientsId,
+      types: this.selectedMealTypes,
+      img: this.selectedImage,
+    };
+
+    console.log(recipeObject);
+
+    this.recipesService.createNewRecipe(recipeObject).subscribe({
+      next: (createdRecipe) => {
+        console.log(`Recipe ${recipeObject} added successfully`);
+        this.clearRecipeData();
+        this.recipeCreated.emit(createdRecipe);
+      },
+      error: (err) => {
+        console.error('Error adding recipe:', err);
+      },
+    });
 
     this.closeModal();
+  }
+
+  onCheckboxChange(event: Event, mealType: RecipeType): void {
+    const checkbox = event.target as HTMLInputElement;
+    if (checkbox.checked) {
+      if (!this.selectedMealTypes.includes(mealType)) {
+        this.selectedMealTypes.push(mealType);
+      }
+    } else {
+      this.selectedMealTypes = this.selectedMealTypes.filter(
+        (type) => type !== mealType
+      );
+    }
+    console.log('Selected meal types:', this.selectedMealTypes);
   }
 
   closeModal() {
